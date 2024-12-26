@@ -1,0 +1,88 @@
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  color: white;
+  font-family: var(--font-poppins);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 21px;
+}
+
+input {
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 12px;
+  padding: 10px 0;
+  margin-bottom: 20px;
+  width: 100%;
+  background-color: transparent;
+  width: 313.97px;
+  padding: 10px;
+  color: white;
+  font-size: 14px;
+}
+
+label {
+  align-self: flex-start;
+}
+
+.loginBtn {
+  background-color: rgba(26, 95, 255, 1);
+  border: none;
+  padding: 10px 0px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 21px;
+  letter-spacing: 0.03em;
+  color: white;
+  box-shadow: 0px 4px 10px 0px rgba(233, 68, 75, 0.25);
+  cursor: pointer;
+  width: 335.65px;
+}
+
+.googleBtn {
+  background-color: rgba(26, 95, 255, 1);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  box-shadow: 0px 4px 10px 0px rgba(233, 68, 75, 0.25);
+  cursor: pointer;
+  width: 315.65px;
+  display: flex;
+  align-items: center;
+  gap: 20%;
+  padding: 10px 10px;
+}
+
+.googleBtnIcon {
+  width: auto;
+  height: 25px;
+}
+
+.googleBtnText {
+}
+
+.registerNowContainer {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 16.94px;
+  letter-spacing: 0.03em;
+  font-family: var(--font-inter);
+  color: white;
+}
+
+.registerNowText {
+  color: rgba(26, 95, 255, 1);
+  cursor: pointer;
+}

@@ -1,0 +1,48 @@
+.mainContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+}
+
+.textContentContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.textContentContainer > .heading {
+  margin-bottom: 1rem;
+  -webkit-text-fill-color: transparent;
+  background: linear-gradient(#4b83ff, #b794f4);
+  background-clip: text;
+  font-family: var(--font-outfit);
+  font-size: 72px;
+  font-weight: 700;
+  line-height: 86.4px;
+  text-align: center;
+}
+
+.textContentContainer > .subText {
+  font-family: var(--font-open-sans);
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 30px;
+  color: white;
+  text-align: center;
+}
+
+.btn {
+  background-color: #1a5fff;
+  color: white;
+  padding: 2% 5%;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-open-sans);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 21.6px;
+}

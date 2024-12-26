@@ -1,0 +1,55 @@
+/* Main container to align everything properly */
+.mainContainer {
+  display: flex;
+  justify-content: center; /* Horizontally center the content */
+  align-items: center; /* Vertically center the content */
+  padding: 0 12%; /* Add left and right padding */
+  gap: 20%;
+  max-width: 100vw; /* Full viewport width */
+  height: 100vh; /* Full viewport height */
+  position: relative;
+  overflow: hidden; /* Prevent scrolling */
+}
+
+/* Circular objects that act as background */
+.leftCircularObj,
+.rightCircularObj {
+  border-radius: 50%;
+  filter: blur(10px);
+  position: absolute;
+}
+
+.leftCircularObj {
+  width: 500px;
+  height: 500px;
+  background-color: #e67200;
+  left: 10%; /* Position left circle slightly to the left */
+  margin-bottom: 130px;
+}
+
+.rightCircularObj {
+  width: 400px;
+  height: 400px;
+  background-color: #0042da;
+  right: 10%; /* Position right circle slightly to the right */
+  margin-top: 50px;
+}
+
+/* Image container */
+.mainImageContainer {
+  display: flex;
+  justify-content: center; /* Center image inside the container */
+  align-items: center;
+  width: 100%;
+  height: 100%; /* Make the container take full height of parent */
+  position: relative;
+  overflow: hidden;
+}
+
+/* Image itself */
+.mainImageContainer > img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain; /* Ensure the image scales without stretching */
+  display: block;
+}

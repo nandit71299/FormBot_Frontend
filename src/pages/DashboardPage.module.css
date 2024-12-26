@@ -1,0 +1,10 @@
+.mainContainer {
+}
+
+.mainContainerDark {
+  background-color: rgba(18, 18, 18, 1);
+}
+
+.mainContainerLight {
+  background-color: rgba(255, 255, 255, 1);
+}

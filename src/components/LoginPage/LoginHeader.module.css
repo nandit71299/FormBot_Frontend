@@ -1,0 +1,14 @@
+.mainContainer {
+  padding: 5%;
+}
+
+.mainContainer > button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.mainContainer > button > i {
+  color: white;
+  font-size: 2rem;
+}

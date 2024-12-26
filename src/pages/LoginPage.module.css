@@ -1,0 +1,32 @@
+.mainContainer {
+  background-color: rgba(24, 24, 27, 1);
+  min-height: 100vh;
+  position: relative;
+}
+
+.floatingObj1 {
+  position: absolute;
+  bottom: 0;
+  right: 20%;
+}
+
+.floatingObj2 {
+  position: absolute;
+  right: 0;
+  top: 20%;
+}
+
+.floatingObj3 {
+  position: absolute;
+  left: 5%;
+  top: 20%;
+}
+.floatingObj4 {
+  position: absolute;
+  left: 4%;
+  top: 22%;
+}
+
+.floatingObj4 {
+  filter: brightness(0.7);
+}

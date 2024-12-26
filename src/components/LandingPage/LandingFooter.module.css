@@ -1,0 +1,62 @@
+.mainContainer {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 0% 10%;
+  gap: 20px;
+}
+
+.logoSubContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.logoContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+}
+
+.logoSubContainer > h2 {
+  color: white;
+  font-family: var(--font-outfit);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 21.6px;
+}
+
+.logoContainer > p {
+  font-family: var(--font-open-sans);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: rgba(255, 255, 255, 0.92);
+}
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.columnHeading {
+  color: white;
+  font-family: var(--font-outfit);
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 21.6px;
+  margin: 0;
+}
+
+.columnItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+}
+
+.item {
+  color: rgba(255, 255, 255, 0.92);
+  font-family: var(--font-open-sans);
+  text-decoration: underline;
+  margin: 0;
+}

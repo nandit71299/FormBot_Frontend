@@ -1,0 +1,57 @@
+.mainContainer {
+  display: flex;
+  justify-content: space-between;
+  padding-left: 10%;
+  padding-right: 10%;
+  align-items: center;
+  padding-top: 20px;
+}
+
+.logoContainer {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+}
+
+.companyName {
+  font-family: var(--font-outfit);
+  color: white;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 21.6px;
+}
+
+.loginSignupContainer {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+}
+
+.signInBtn,
+.singUpBtn {
+  font-family: var(--font-open-sans);
+  padding: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  border-radius: 6px;
+  box-shadow: none;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 19.2px;
+}
+
+.signInBtn {
+  color: #7ea6ff;
+  background-color: transparent;
+  border: 1px solid;
+  cursor: pointer;
+}
+
+.singUpBtn {
+  background-color: #1a5fff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
