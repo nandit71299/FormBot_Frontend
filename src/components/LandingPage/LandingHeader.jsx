@@ -1,6 +1,5 @@
 import React from "react";
 import styles from "./LandingHeader.module.css";
-import logo from "/download.png";
 import { useNavigate } from "react-router-dom";
 
 function LandingHeader() {

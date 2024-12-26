@@ -1,6 +1,5 @@
 import React from "react";
 import styles from "./ImageSection.module.css";
-import appFlow from "../../../public/appFlow.png";
 
 function ImageSection() {
   return (

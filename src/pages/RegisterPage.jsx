@@ -2,9 +2,6 @@ import React from "react";
 import styles from "./RegisterPage.module.css";
 import RegisterHeader from "../components/RegisterPage/RegisterHeader";
 import RegisterForm from "../components/RegisterPage/RegisterForm";
-import ellipse1 from "../../public/ellipse1.png";
-import ellipse2 from "../../public/ellipse2.png";
-import polygon from "../../public/polygon.png";
 
 function RegisterPage() {
   return (

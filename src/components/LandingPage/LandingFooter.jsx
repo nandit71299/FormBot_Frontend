@@ -1,6 +1,5 @@
 import React from "react";
 import styles from "./LandingFooter.module.css";
-import logo from "../../../public/download.png";
 
 function LandingFooter() {
   return (

@@ -2,9 +2,6 @@ import React from "react";
 import styles from "./LoginPage.module.css";
 import LoginHeader from "../components/LoginPage/LoginHeader";
 import LoginForm from "../components/LoginPage/LoginForm";
-import ellipse1 from "../../public/ellipse1.png";
-import ellipse2 from "../../public/ellipse2.png";
-import polygon from "../../public/polygon.png";
 
 function LoginPage() {
   return (

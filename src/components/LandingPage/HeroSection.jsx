@@ -1,7 +1,5 @@
 import React from "react";
 import styles from "./HeroSection.module.css";
-import traingleLeft from "../../../public/traingleLeft.png";
-import curveRight from "../../../public/curveRight.png";
 import { useNavigate } from "react-router-dom";
 
 function HeroSection() {
