@@ -8,7 +8,7 @@ function LandingHeader() {
   return (
     <div className={`${styles.mainContainer}`}>
       <div className={styles.logoContainer}>
-        <img src={logo} alt="FormBot Logo" />
+        <img src="./download.png" alt="FormBot Logo" />
         <h2 className={`${styles.companyName}`}>FormBot</h2>
       </div>
       <div className={`${styles.loginSignupContainer}`}>

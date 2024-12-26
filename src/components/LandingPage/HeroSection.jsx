@@ -9,7 +9,7 @@ function HeroSection() {
   return (
     <div className={styles.mainContainer}>
       <div>
-        <img src={traingleLeft} alt="" />
+        <img src="./traingleLeft.png" alt="" />
       </div>
       <div className={styles.textContentContainer}>
         <h2 className={styles.heading}>Build advanced chatbots visually</h2>
@@ -23,7 +23,7 @@ function HeroSection() {
         </button>
       </div>
       <div>
-        <img src={curveRight} alt="" />
+        <img src="./curveRight.png" alt="" />
       </div>
     </div>
   );

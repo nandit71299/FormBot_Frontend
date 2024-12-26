@@ -16,16 +16,16 @@ function RegisterPage() {
         <RegisterForm />
       </div>
       <div className={styles.floatingObj1}>
-        <img src={ellipse1} alt="" />
+        <img src="./ellipse1.png" alt="" />
       </div>
       <div className={styles.floatingObj2}>
-        <img src={ellipse2} alt="" />
+        <img src="./ellipse2.png" alt="" />
       </div>
       <div className={styles.floatingObj4}>
-        <img src={polygon} alt="" />
+        <img src="./polygon.png" alt="" />
       </div>
       <div className={styles.floatingObj3}>
-        <img src={polygon} alt="" />
+        <img src="./polygon.png" alt="" />
       </div>
     </div>
   );

@@ -8,7 +8,7 @@ function LandingFooter() {
       <div>
         <div className={styles.logoContainer}>
           <div className={styles.logoSubContainer}>
-            <img src={logo} alt="" />
+            <img src="./download.png" alt="" />
             <h2>FormBot</h2>
           </div>
           <p>Made with ❤️ by @cuvette</p>

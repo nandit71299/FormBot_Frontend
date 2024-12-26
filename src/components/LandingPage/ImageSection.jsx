@@ -8,7 +8,7 @@ function ImageSection() {
       <div className={styles.leftCircularObj}></div>
       <div className={styles.rightCircularObj}></div>
       <div className={styles.mainImageContainer}>
-        <img src={appFlow} alt="App Flow Image" />
+        <img src="./appFlow.png" alt="App Flow Image" />
       </div>
     </div>
   );
