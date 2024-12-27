@@ -19,7 +19,7 @@ function LandingHeader() {
         </button>
         <button
           className={`${styles.singUpBtn}`}
-          onClick={() => navigate("/signup")}
+          onClick={() => navigate("/login")}
         >
           Create a FormBot
         </button>

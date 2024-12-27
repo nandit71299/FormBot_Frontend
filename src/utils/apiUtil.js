@@ -50,6 +50,12 @@ export const toggleAppTheme = async (mode) => {
     });
     return response.data;
   } catch (error) {
-    throw new Error("Failed to toggle theme.");
+    if (error.response && error.response.data) {
+      return new Error(
+        error.response.data.message || "Failed to toggle theme."
+      );
+    } else {
+      return new Error("Failed to toggle theme.");
+    }
   }
 };

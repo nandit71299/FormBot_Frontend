@@ -8,3 +8,16 @@
 .mainContainerLight {
   background-color: rgba(255, 255, 255, 1);
 }
+
+.bgDark {
+  background-color: rgba(24, 24, 27, 1);
+}
+
+.bgLight {
+  background-color: rgba(255, 255, 255, 1);
+}
+
+.dashboardContentContainer {
+  height: 95vh;
+  overflow: scroll;
+}

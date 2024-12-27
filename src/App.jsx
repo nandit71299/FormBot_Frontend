@@ -7,8 +7,21 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import { ToastContainer } from "react-toastify";
 import DashboardPage from "./pages/DashboardPage";
+import { useDispatch, useSelector } from "react-redux";
+import { setTheme } from "./redux/reducers/themeReducer";
 
 function App() {
+  const theme = localStorage.getItem("theme");
+  const dispatch = useDispatch();
+  if (theme) {
+    if (theme === "dark") {
+      dispatch(setTheme(true));
+    } else if (theme === "light") {
+      dispatch(setTheme(false));
+    } else {
+      dispatch(setTheme(true));
+    }
+  }
   return (
     <BrowserRouter>
       <Routes>

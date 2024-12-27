@@ -1,0 +1,56 @@
+.mainContainer {
+  padding: 10px 50px;
+  margin-top: 20px;
+}
+
+.folderContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: center;
+}
+
+.folderItemDark,
+.folderItemLight {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 19.2px;
+  cursor: pointer;
+}
+
+.createBtnDark,
+.folderItemContainerDark {
+  display: flex;
+  padding: 10px 20px;
+  gap: 10px;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  font-family: var(--font-open-sans);
+  color: white;
+}
+.createBtnLight,
+.folderItemContainerLight {
+  display: flex;
+  padding: 10px 20px;
+  gap: 10px;
+  border-radius: 6px;
+  font-family: var(--font-open-sans);
+  align-items: center;
+  background-color: rgba(43, 43, 43, 0.08);
+}
+.delIconContainer {
+  color: red;
+  cursor: pointer;
+}
+
+.createBtnDark,
+.createBtnLight {
+  gap: 5px;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 19.2px;
+  cursor: pointer;
+}

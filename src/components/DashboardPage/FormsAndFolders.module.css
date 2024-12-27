@@ -1,0 +1,73 @@
+.mainContainer {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  padding: 0px 50px;
+}
+
+.createFolderContainer {
+  background-color: rgba(26, 95, 255, 1);
+  color: white;
+  padding: 20px;
+  cursor: pointer;
+  height: 230px;
+  width: 180px; /* Fixed width */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  border-radius: 6px;
+  font-family: var(--font-open-sans);
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 21.6px;
+  flex-shrink: 0; /* Prevent it from shrinking */
+}
+
+.addIcon {
+  font-size: 20px;
+}
+
+.formsAndFoldersContainer {
+  display: flex;
+  flex-wrap: wrap; /* Allow wrapping of the dynamic items */
+  gap: 20px;
+  justify-content: flex-start; /* Align items to the left */
+  flex-grow: 1; /* Allow the container to grow */
+}
+
+.formOrFolderContainer {
+  color: white;
+  padding: 20px;
+  cursor: pointer;
+  height: 230px;
+  width: 180px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  border-radius: 6px;
+  font-family: var(--font-open-sans);
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 21.6px;
+  position: relative;
+}
+
+.delIcon {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  font-size: 18px;
+  color: red;
+}
+
+.formOrFolderContainerDark {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.formOrFolderContainerLight {
+  background-color: rgba(0, 0, 0, 0.5);
+}
