@@ -5,6 +5,7 @@ import { login } from "../../utils/apiUtil";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { setTheme } from "../../redux/reducers/themeReducer";
+import { userLoginSuccess } from "../../redux/reducers/userReducer";
 
 function LoginForm() {
   const dispatch = useDispatch();
@@ -32,6 +33,7 @@ function LoginForm() {
           dispatch(setTheme(theme === "dark" ? true : false));
         }
         localStorage.setItem("theme", theme === "dark" ? true : false);
+        dispatch(userLoginSuccess(response.user));
         navigate("/dashboard");
       } else {
         toast.error(response.message || "Login failed. Please try again.");

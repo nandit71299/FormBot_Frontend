@@ -7,10 +7,12 @@ import store from "./redux/store.js";
 import { ToastContainer } from "react-toastify";
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
-    <ToastContainer theme="dark" />
-  </StrictMode>
+  <>
+    <StrictMode>
+      <Provider store={store}>
+        <App />
+      </Provider>
+      <ToastContainer theme="dark" />
+    </StrictMode>
+  </>
 );

@@ -1,63 +1,140 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import DashboardHeader from "../components/DashboardPage/DashboardHeader";
 import FoldersStrip from "../components/DashboardPage/FoldersStrip";
-import FormsAndFolders from "../components/DashboardPage/FormsAndFolders";
-import { useSelector } from "react-redux";
+import Forms from "../components/DashboardPage/Forms";
+import {
+  getUserDetails,
+  getWorkspaceFolders,
+  getWorkspaceForms,
+} from "../utils/apiUtil"; // Add getWorkspaceForms
+import {
+  setLoaded,
+  setLoading,
+  setUserDetails,
+} from "../redux/reducers/userReducer";
+import Loader from "../components/Loader";
 import styles from "./DashboardPage.module.css";
+import { toast } from "react-toastify";
+import {
+  getWorkspaceFoldersRequest,
+  getWorkspaceFoldersSuccess,
+  getWorkspaceFormsRequest,
+  getWorkspaceFormsSuccess,
+  selectWorkspace,
+  setAccessLevel,
+} from "../redux/reducers/workspaceReducer";
 
 function DashboardPage() {
+  const dispatch = useDispatch();
   const darkMode = useSelector((store) => store.theme.darkMode);
-  const workspaces = [
-    { id: 1, name: "Workspace 1" },
-    { id: 2, name: "Workspace 2" },
-    { id: 3, name: "Workspace 3" },
-  ];
-  const folders = [
-    { id: 1, name: "Folder 1" },
-    { id: 2, name: "Folder 2" },
-    { id: 3, name: "Folder 3" },
-    { id: 4, name: "Folder 4" },
-    { id: 5, name: "Folder 5" },
-    { id: 6, name: "Folder 6" },
-    { id: 7, name: "Folder 7" },
-    { id: 8, name: "Folder 8" },
-    { id: 9, name: "Folder 9" },
-    { id: 10, name: "Folder 10" },
-    { id: 11, name: "Folder 11" },
-    { id: 12, name: "Folder 12" },
-    { id: 13, name: "Folder 13" },
-    { id: 14, name: "Folder 14" },
-    { id: 15, name: "Folder 15" },
-  ];
-  const formsAndFolders = [
-    { id: 1, name: "Folder 1" },
-    { id: 2, name: "Form 1" },
-    { id: 3, name: "Form 2" },
-    { id: 4, name: "Form 3" },
-    { id: 5, name: "Form 4" },
-    { id: 6, name: "Form 5" },
-  ];
+  const loading = useSelector((store) => store.user.loading);
+  const foldersLoading = useSelector((store) => store.workspace.loading);
+  const folders = useSelector((store) => store.workspace.folders);
+  const forms = useSelector((store) => store.workspace.forms); // Get workspace forms
+  const workspaces = useSelector((store) => store.user.userInfo.workspaces);
+  const [showCreateFolderModel, setShowCreateFolderModel] = useState(false);
+  const selectedWorkspace = useSelector(
+    (store) => store.workspace.selectedWorkspace
+  );
+  const isSharedWorkspaceFolders = useSelector(
+    (store) => store.workspace.isSharedWorkspaceFolders
+  );
+  const isSharedWorkspaceForms = useSelector(
+    (store) => store.workspace.isSharedWorkspaceForms
+  );
+  const accessLevel = useSelector((store) => store.workspace.accessLevel);
+
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      dispatch(setLoading());
+      try {
+        const response = await getUserDetails();
+        if (response.success) {
+          dispatch(setUserDetails(response.user));
+        } else {
+          toast.error("Failed to fetch user details");
+        }
+      } catch (error) {
+        console.error("Error fetching user details:", error);
+        toast.error("Failed to fetch user details.");
+      } finally {
+        dispatch(setLoaded());
+      }
+    };
+
+    fetchUserDetails();
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (selectedWorkspace) {
+      dispatch(getWorkspaceFoldersRequest());
+      const fetchWorkspaceFolders = async () => {
+        const response = await getWorkspaceFolders(selectedWorkspace._id);
+        if (response.success) {
+          dispatch(getWorkspaceFoldersSuccess(response)); // Store folders and isSharedWorkspace flag
+          dispatch(setAccessLevel(response?.accessLevel));
+        } else {
+          toast.error("Failed to fetch workspace folders");
+        }
+      };
+      fetchWorkspaceFolders();
+
+      // Fetch forms from the workspace directly (outside of folders)
+      const fetchWorkspaceForms = async () => {
+        dispatch(getWorkspaceFormsRequest());
+        const response = await getWorkspaceForms(selectedWorkspace._id); // Get forms from workspace
+        if (response.success) {
+          dispatch(getWorkspaceFormsSuccess(response)); // Store forms and isSharedWorkspace flag
+          dispatch(setAccessLevel(response?.accessLevel));
+        } else {
+          toast.error("Failed to fetch workspace forms");
+        }
+      };
+      fetchWorkspaceForms();
+    }
+  }, [selectedWorkspace, dispatch]);
+
+  if (loading || foldersLoading) {
+    return <Loader />;
+  }
+
   return (
     <div
       className={`${
         darkMode ? styles.mainContainerDark : styles.mainContainerLight
       } ${styles.mainContainer}`}
     >
-      {/* Dashboard Header */}
-      <div>
-        <DashboardHeader workspaces={workspaces} />
-      </div>
-      {/* Dashboard Content */}
+      <DashboardHeader
+        workspaces={workspaces}
+        selectedWorkspace={selectedWorkspace}
+        setSelectedWorkspace={(workspace) =>
+          dispatch(selectWorkspace(workspace))
+        }
+      />
       <div
         className={`${darkMode ? styles.bgDark : styles.bgLight} ${
           styles.dashboardContentContainer
         }`}
       >
         <div>
-          <FoldersStrip folders={folders} />
+          {foldersLoading ? (
+            <Loader />
+          ) : (
+            <FoldersStrip
+              folders={folders}
+              isSharedWorkspace={isSharedWorkspaceFolders} // Pass isSharedWorkspace flag for folders
+              accessLevel={accessLevel}
+            />
+          )}
         </div>
         <div>
-          <FormsAndFolders formsAndFolders={formsAndFolders} />
+          <Forms
+            forms={forms}
+            isSharedWorkspace={isSharedWorkspaceForms} // Pass isSharedWorkspace flag for forms
+            accessLevel={accessLevel}
+          />{" "}
+          {/* Pass workspace forms here */}
         </div>
       </div>
     </div>

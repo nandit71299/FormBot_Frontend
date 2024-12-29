@@ -42,6 +42,8 @@
 .delIconContainer {
   color: red;
   cursor: pointer;
+  background-color: transparent;
+  border: none;
 }
 
 .createBtnDark,
@@ -53,4 +55,12 @@
   font-weight: 600;
   line-height: 19.2px;
   cursor: pointer;
+}
+
+.createBtnDisabled {
+  cursor: not-allowed;
+}
+
+.disbaledBtn {
+  cursor: not-allowed;
 }

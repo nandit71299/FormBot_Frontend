@@ -1,11 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  userInfo: {
-    id: 1,
-    name: "John Doe",
-    email: "john.doe@example.com",
-  },
+  userInfo: {},
   loading: false,
   error: null,
 };
@@ -28,10 +24,31 @@ const userSlice = createSlice({
     userLogout: (state) => {
       state.userInfo = null;
     },
+    setLoading: (state) => {
+      state.loading = true; // Simply set loading to true, no payload needed
+    },
+    setLoaded: (state) => {
+      state.loading = false;
+      state.error = null;
+    },
+    setUserDetails: (state, action) => {
+      state.userInfo = action.payload; // Store user details in `userInfo`
+    },
+    setWorkspaces: (state, action) => {
+      state.userInfo.workspaces = action.payload; // Store workspaces directly
+    },
   },
 });
 
-export const { userLoginRequest, userLoginSuccess, userLoginFail, userLogout } =
-  userSlice.actions;
+export const {
+  setUserDetails,
+  setLoaded,
+  setLoading,
+  setWorkspaces,
+  userLoginRequest,
+  userLoginSuccess,
+  userLoginFail,
+  userLogout,
+} = userSlice.actions;
 
 export default userSlice.reducer;

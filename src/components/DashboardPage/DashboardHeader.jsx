@@ -1,22 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./DashboardHeader.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleTheme } from "../../redux/reducers/themeReducer";
 import { toggleAppTheme } from "../../utils/apiUtil";
 import { toast } from "react-toastify";
+import { selectWorkspace } from "../../redux/reducers/workspaceReducer"; // Ensure this action is imported
 
-function DashboardHeader({ workspaces }) {
+function DashboardHeader({
+  workspaces,
+  selectedWorkspace,
+  setSelectedWorkspace,
+}) {
   const darkMode = useSelector((store) => store.theme.darkMode);
   const dispatch = useDispatch();
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
-  // Define a list of workspaces (can be dynamic from an API)
-
-  // State for selected workspace
-  const [selectedWorkspace, setSelectedWorkspace] = useState(workspaces[0]);
+  useEffect(() => {
+    if (workspaces?.length > 0 && !selectedWorkspace) {
+      dispatch(selectWorkspace(workspaces[0])); // Automatically select the first workspace if none is selected
+    }
+  }, [workspaces, selectedWorkspace, dispatch]);
 
   const changeTheme = async () => {
     const response = await toggleAppTheme(darkMode ? "light" : "dark");
-
     if (response.success) {
       dispatch(toggleTheme());
       localStorage.setItem("theme", response?.user?.theme || "true");
@@ -25,44 +31,81 @@ function DashboardHeader({ workspaces }) {
     }
   };
 
-  // Handle workspace selection
-  const handleWorkspaceChange = (e) => {
-    const selectedId = e.target.value;
-    const selected = workspaces.find(
-      (workspace) => workspace.id === parseInt(selectedId)
-    );
-    setSelectedWorkspace(selected);
-    console.log("Selected Workspace:", selected);
+  const handleWorkspaceChange = (workspace) => {
+    dispatch(selectWorkspace(workspace)); // Dispatch to update the selected workspace in Redux
+    setDropdownOpen(false);
   };
+
+  const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
 
   return (
     <div
       className={`${styles.mainContainer} ${
         darkMode
-          ? `${styles.bgDark}  ${styles.textLight}`
+          ? `${styles.bgDark} ${styles.textLight}`
           : `${styles.bgLight} ${styles.textDark}`
       }`}
     >
       <div></div>
-      {/* Dropdown for workspaces */}
       <div className={styles.workspaceDropdown}>
-        <select
-          id="workspaceSelect"
-          value={selectedWorkspace.id}
-          onChange={handleWorkspaceChange}
+        <div
+          className={`${styles.selectedWorkspace} ${
+            darkMode
+              ? styles.selectedWorkspaceDark
+              : styles.selectedWorkspaceLight
+          }`}
+          onClick={toggleDropdown}
         >
-          {workspaces.map((workspace) => (
-            <option key={workspace.id} value={workspace.id}>
-              {workspace.name}
-            </option>
-          ))}
-        </select>
+          {selectedWorkspace?.workspaceName || "Select Workspace"}
+          <i
+            className={`fa ${
+              dropdownOpen ? "fa-chevron-up" : "fa-chevron-down"
+            } ${styles.dropdownIcon}`}
+          />
+        </div>
+        {dropdownOpen && (
+          <div
+            className={`${styles.dropdownMenu} ${
+              darkMode ? styles.dropdownMenuDark : styles.dropdownMenuLight
+            }`}
+          >
+            {workspaces?.length > 0 ? (
+              workspaces.map((workspace) => (
+                <div
+                  key={workspace._id}
+                  className={`${styles.dropdownItem}
+                    ${
+                      darkMode
+                        ? styles.dropdownItemDark
+                        : styles.dropdownItemLight
+                    }`}
+                  onClick={() => handleWorkspaceChange(workspace)}
+                >
+                  {workspace.workspaceName}
+                </div>
+              ))
+            ) : (
+              <div className={styles.dropdownItem}>No Workspaces Available</div>
+            )}
+            <div className={styles.divider}></div>
+            <div
+              className={styles.dropdownItem}
+              onClick={() => console.log("Settings clicked")}
+            >
+              Settings
+            </div>
+            <div
+              className={styles.dropdownItem}
+              onClick={() => console.log("Log Out clicked")}
+            >
+              Log Out
+            </div>
+          </div>
+        )}
       </div>
-
-      {/* Theme Toggle and Share Button */}
       <div className={styles.toggleContainer}>
         <div>
-          <label htmlFor="themeLight"> Light &nbsp; </label>
+          <label htmlFor="themeLight"> Light </label>
           <label className={styles.switch}>
             <input
               type="checkbox"
@@ -72,10 +115,8 @@ function DashboardHeader({ workspaces }) {
             />
             <span className={styles.slider}></span>
           </label>
-          <label htmlFor="themeDark">&nbsp; Dark</label>
+          <label htmlFor="themeDark"> Dark </label>
         </div>
-
-        {/* Share Button */}
         <button className={styles.shareBtn}>Share</button>
       </div>
     </div>

@@ -59,3 +59,129 @@ export const toggleAppTheme = async (mode) => {
     }
   }
 };
+
+export const getWorkspacesFromServer = async () => {
+  try {
+    const response = await axios.get(
+      `${API_URL}/workspace/getAllWorkspaces`,
+      null,
+      {
+        headers: {
+          authorization: localStorage.getItem("token"),
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    if (error.response && error.response.data) {
+      return new Error(
+        error.response.data.message || "Failed to fetch workspaces."
+      );
+    } else {
+      return new Error("Failed to toggle theme.");
+    }
+  }
+};
+
+export const getUserDetails = async () => {
+  try {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      const response = await axios.get(`${API_URL}/auth/getUserDetails`, {
+        headers: {
+          authorization: token, // Directly pass the token as 'authorization'
+        },
+      });
+
+      if (response.data.success) {
+        return response.data;
+      } else {
+        return {
+          success: false,
+          message: "Failed to fetch workspaces.",
+        };
+      }
+    } else {
+      return {
+        success: false,
+        message: "Please Login.",
+      };
+    }
+  } catch (error) {
+    if (error.response) {
+      console.error("Error response:", error.response); // Log error response
+      return {
+        success: false,
+        message: error.response.data.message || "Failed to fetch workspaces.",
+      };
+    } else {
+      console.error("Error:", error); // Log generic error
+      return {
+        success: false,
+        message: error.message || "An error occurred.",
+      };
+    }
+  }
+};
+
+export const getWorkspaceFolders = async (workspaceId) => {
+  try {
+    const token = localStorage.getItem("token");
+    if (token) {
+      const response = await axios.get(`${API_URL}/folder/${workspaceId}`, {
+        headers: {
+          authorization: localStorage.getItem("token"),
+        },
+      });
+
+      return response.data;
+    } else {
+      return {
+        success: false,
+        message: "Failed to fetch folders.",
+      };
+    }
+  } catch (error) {
+    if (error.response) {
+      console.error("Error response:", error.response); // Log error response
+      return {
+        success: false,
+        message: error.response.data.message || "Failed to fetch folders.",
+      };
+    } else {
+      console.error("Error:", error); // Log generic error
+      return {
+        success: false,
+        message: error.message || "An error occurred.",
+      };
+    }
+  }
+};
+
+export const getWorkspaceForms = async (workspaceId) => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await axios.get(`${API_URL}/forms/${workspaceId}`, {
+      headers: {
+        authorization: localStorage.getItem("token"),
+      },
+    });
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      console.error("Error response:", error.response); // Log error response
+      return {
+        success: false,
+        message: error.response.data.message || "Failed to fetch forms.",
+      };
+    } else {
+      console.error("Error:", error); // Log generic error
+      return {
+        success: false,
+        message: error.message || "An error occurred.",
+      };
+    }
+  }
+};

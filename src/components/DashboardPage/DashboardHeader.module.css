@@ -24,53 +24,86 @@
   color: white;
 }
 
+/* Dropdown Styles */
 .workspaceDropdown {
-  margin: 0 20px;
   position: relative;
-  display: inline-block;
-  margin-left: 250px;
 }
 
-select {
-  padding: 8px 30px 8px 10px; /* Add extra padding for space */
-  margin-left: 10px;
+.selectedWorkspace {
+  padding: 8px 20px;
+  background-color: #222;
+  color: #fff;
   border-radius: 4px;
-  border: 1px solid #ccc;
-  background-color: transparent; /* Transparent background */
-  color: inherit; /* Inherit text color from parent */
+  cursor: pointer;
   font-size: 16px;
-  font-family: inherit; /* Ensure the font is consistent */
-  width: 180px;
-
-  /* Remove the default arrow on all browsers */
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-
-  /* Remove the arrow for IE */
-  select::-ms-expand {
-    display: none;
-  }
-
-  /* Remove any padding to avoid issues with space for custom arrows */
-  padding-right: 10px; /* Adjust for no arrow */
+  margin-left: 150px;
+}
+.selectedWorkspaceDark {
+  background-color: #222;
+}
+.selectedWorkspaceLight {
+  background-color: transparent;
+  color: black;
+  border: 1px solid;
 }
 
-select:focus {
-  outline: none;
-  border-color: #007bff;
-}
-
-/* Custom styling for dropdown to indicate that the arrow is gone */
-.workspaceDropdown::after {
-  content: ""; /* No arrow */
-  font-size: 14px;
+.dropdownMenu {
   position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: transparent; /* Hide the arrow */
-  pointer-events: none;
+  top: 100%;
+  right: 0;
+  width: calc(100% - 150px);
+  background-color: #333;
+  border: 1px solid #555;
+  border-radius: 4px;
+  margin-top: 8px;
+  z-index: 10;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.dropdownMenuLight {
+  background-color: white;
+  color: black;
+}
+.dropdownMenuDark {
+  background-color: #333;
+  color: white;
+}
+
+.dropdownItem {
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.dropdownItemDark {
+  background-color: #333;
+}
+
+.dropdownItemLight {
+  background-color: transparent;
+  color: black;
+}
+
+.dropdownItemDark:hover {
+  background-color: #a4a4a4;
+  color: black;
+}
+
+.dropdownItemLight:hover {
+  background-color: rgba(26, 95, 255, 1);
+  color: white;
+}
+
+.divider {
+  height: 1px;
+  background-color: #555;
+  margin: 5px 0;
+}
+
+/* Arrow Icon styling */
+.dropdownIcon {
+  margin-left: 8px; /* Space between the workspace name and the arrow */
+  font-size: 14px; /* Adjust the size of the icon */
 }
 
 /* Theme Toggle Styling */

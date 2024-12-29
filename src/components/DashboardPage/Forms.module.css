@@ -5,7 +5,7 @@
   padding: 0px 50px;
 }
 
-.createFolderContainer {
+.createFormContainer {
   background-color: rgba(26, 95, 255, 1);
   color: white;
   padding: 20px;
@@ -37,7 +37,7 @@
   flex-grow: 1; /* Allow the container to grow */
 }
 
-.formOrFolderContainer {
+.formContainer {
   color: white;
   padding: 20px;
   cursor: pointer;
@@ -64,10 +64,16 @@
   color: red;
 }
 
-.formOrFolderContainerDark {
+.formContainerDark {
   background-color: rgba(255, 255, 255, 0.5);
 }
 
-.formOrFolderContainerLight {
-  background-color: rgba(0, 0, 0, 0.5);
+.formContainerLight {
+  background-color: rgba(201, 201, 201, 0.5);
+  color: black;
+  box-shadow: 0px 2px 2px rgb(0 0 0 / 19%);
+}
+
+.createFormContainerDisabled{
+  cursor: not-allowed;
 }
