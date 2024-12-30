@@ -45,7 +45,6 @@ function Forms({ forms, isSharedWorkspace, accessLevel, openCreateFormModal }) {
             />
           )}
         </div>
-        <p>No forms available</p> {/* Display this message if no forms exist */}
       </div>
     );
   }

@@ -53,12 +53,17 @@ const workspaceSlice = createSlice({
     setFolderForms: (state, action) => {
       const { folderId, forms } = action.payload;
 
-      // Find the folder by its ID and update its forms
-      const folder = state.folders.find((folder) => folder._id === folderId);
-
-      if (folder) {
-        folder.forms = forms; // Update the forms for the selected folder
-      }
+      // Update the folders array immutably
+      state.folders = state.folders.map((folder) => {
+        if (folder._id === folderId) {
+          // Return a new folder object with updated forms
+          return { ...folder, forms };
+        }
+        return folder; // Return unchanged folder
+      });
+    },
+    setLoaded: (state, action) => {
+      state.loading = false;
     },
   },
 });
@@ -75,6 +80,7 @@ export const {
   setAccessLevel,
   setSelectedFolder,
   setFolderForms,
+  setLoaded
 } = workspaceSlice.actions;
 
 export default workspaceSlice.reducer;

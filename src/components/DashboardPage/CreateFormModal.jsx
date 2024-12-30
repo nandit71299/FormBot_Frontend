@@ -9,9 +9,12 @@ import {
   getWorkspaceForms,
 } from "../../utils/apiUtil";
 import { toast } from "react-toastify";
-import { resaveForms } from "../../utils/stateUtils";
+import { resaveFolderForms, resaveForms } from "../../utils/stateUtils";
 import { useDispatch, useSelector } from "react-redux";
-import { getWorkspaceFormsRequest } from "../../redux/reducers/workspaceReducer";
+import {
+  getWorkspaceFormsRequest,
+  setLoaded,
+} from "../../redux/reducers/workspaceReducer";
 
 function CreateFormModal({ onClose, selectedWorkspace }) {
   const [formName, setFormName] = React.useState("");
@@ -58,8 +61,12 @@ function CreateFormModal({ onClose, selectedWorkspace }) {
             response?.data?.folderId
           );
           if (refetchFolderForms.success) {
-            console.log(refetchFolderForms);
-            resaveForms(dispatch, refetchFolderForms.forms);
+            console.log("selectedFolder", selectedFolder);
+            resaveFolderForms(dispatch, {
+              folderId: selectedFolder,
+              forms: refetchFolderForms.forms,
+            });
+            dispatch(setLoaded());
           } else {
             toast.error(
               "Failed to fetch folder forms. Please refresh the page."

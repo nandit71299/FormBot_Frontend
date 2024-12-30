@@ -13,5 +13,6 @@ export const resaveForms = (dispatch, data) => {
 };
 
 export const resaveFolderForms = async (dispatch, data) => {
+  console.log(data);
   dispatch(setFolderForms(data));
 };
