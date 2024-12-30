@@ -185,3 +185,123 @@ export const getWorkspaceForms = async (workspaceId) => {
     }
   }
 };
+
+export const createFolder = async (data) => {
+  try {
+    const response = await axios.post(
+      `${API_URL}/folder/create/${data.workspaceId}`,
+      data,
+      {
+        headers: {
+          authorization: localStorage.getItem("token"),
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      console.error("Error response:", error.response); // Log error response
+      return {
+        success: false,
+        message: error.response.data.message || "Failed to create folder.",
+      };
+    } else {
+      console.error("Error:", error); // Log generic error
+      return {
+        success: false,
+        message: error.message || "An error occurred.",
+      };
+    }
+  }
+};
+
+export const createForm = async (data) => {
+  try {
+    const response = await axios.post(
+      `${API_URL}/forms/create/${data.workspaceId}`,
+      data,
+      {
+        headers: {
+          authorization: localStorage.getItem("token"),
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      console.error("Error response:", error.response); // Log error response
+      return {
+        success: false,
+        message: error.response.data.message || "Failed to create form.",
+      };
+    } else {
+      console.error("Error:", error); // Log generic error
+      return {
+        success: false,
+        message: error.message || "An error occurred.",
+      };
+    }
+  }
+};
+
+export const getFolderForms = async (workspaceId, folderId) => {
+  try {
+    const response = await axios.get(
+      `${API_URL}/forms/${workspaceId}/${folderId}`,
+      {
+        headers: {
+          authorization: localStorage.getItem("token"),
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      console.error("Error response:", error.response); // Log error response
+      return {
+        success: false,
+        message: error.response.data.message || "Failed to fetch folder forms.",
+      };
+    } else {
+      console.error("Error:", error); // Log generic error
+      return {
+        success: false,
+        message: error.message || "An error occurred.",
+      };
+    }
+  }
+};
+
+export const createFormInsideFolder = async (
+  workspaceId,
+  folderId,
+  formName
+) => {
+  try {
+    const response = await axios.post(
+      `${API_URL}/forms/create/${workspaceId}/${folderId}`,
+      { formName },
+      {
+        headers: {
+          authorization: localStorage.getItem("token"),
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      console.error("Error response:", error.response); // Log error response
+      return {
+        success: false,
+        message:
+          error.response.data.message || "Failed to create form inside folder.",
+      };
+    } else {
+      console.error("Error:", error); // Log generic error
+      return {
+        success: false,
+        message: error.message || "An error occurred.",
+      };
+    }
+  }
+};

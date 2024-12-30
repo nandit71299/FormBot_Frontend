@@ -171,3 +171,11 @@
 .shareBtn:hover {
   background-color: rgba(26, 95, 255, 0.8); /* Slight hover effect */
 }
+
+.shareBtnDisabled {
+  background-color: gray;
+  cursor: not-allowed;
+}
+.shareBtnDisabled:hover {
+  background-color: gray;
+}

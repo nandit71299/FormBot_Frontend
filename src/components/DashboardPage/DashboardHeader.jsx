@@ -10,6 +10,7 @@ function DashboardHeader({
   workspaces,
   selectedWorkspace,
   setSelectedWorkspace,
+  isSharedWorkspaceFolders,
 }) {
   const darkMode = useSelector((store) => store.theme.darkMode);
   const dispatch = useDispatch();
@@ -88,18 +89,8 @@ function DashboardHeader({
               <div className={styles.dropdownItem}>No Workspaces Available</div>
             )}
             <div className={styles.divider}></div>
-            <div
-              className={styles.dropdownItem}
-              onClick={() => console.log("Settings clicked")}
-            >
-              Settings
-            </div>
-            <div
-              className={styles.dropdownItem}
-              onClick={() => console.log("Log Out clicked")}
-            >
-              Log Out
-            </div>
+            <div className={styles.dropdownItem}>Settings</div>
+            <div className={styles.dropdownItem}>Log Out</div>
           </div>
         )}
       </div>
@@ -117,7 +108,14 @@ function DashboardHeader({
           </label>
           <label htmlFor="themeDark"> Dark </label>
         </div>
-        <button className={styles.shareBtn}>Share</button>
+        <button
+          disabled={isSharedWorkspaceFolders ? true : false}
+          className={`${styles.shareBtn} ${
+            isSharedWorkspaceFolders && styles.shareBtnDisabled
+          }`}
+        >
+          Share
+        </button>
       </div>
     </div>
   );

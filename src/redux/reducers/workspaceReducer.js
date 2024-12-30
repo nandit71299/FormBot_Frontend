@@ -2,8 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   selectedWorkspace: null,
+  selectedFolder: null,
   folders: [],
-  forms: [], // Workspace forms (forms directly in workspace, not inside folders)
+  forms: [],
   isSharedWorkspace: false,
   accessLevel: "edit",
   loading: false,
@@ -46,6 +47,19 @@ const workspaceSlice = createSlice({
     setAccessLevel: (state, action) => {
       state.accessLevel = action.payload;
     },
+    setSelectedFolder: (state, action) => {
+      state.selectedFolder = action.payload;
+    },
+    setFolderForms: (state, action) => {
+      const { folderId, forms } = action.payload;
+
+      // Find the folder by its ID and update its forms
+      const folder = state.folders.find((folder) => folder._id === folderId);
+
+      if (folder) {
+        folder.forms = forms; // Update the forms for the selected folder
+      }
+    },
   },
 });
 
@@ -58,7 +72,9 @@ export const {
   getWorkspaceFormsSuccess,
   getWorkspaceFormsFail,
   setSharedWorkspace,
-  setAccessLevel
+  setAccessLevel,
+  setSelectedFolder,
+  setFolderForms,
 } = workspaceSlice.actions;
 
 export default workspaceSlice.reducer;

@@ -64,3 +64,12 @@
 .disbaledBtn {
   cursor: not-allowed;
 }
+
+.selectedDark {
+  background-color: white;
+  color: black;
+}
+.selectedLight {
+  background-color: rgba(26, 95, 255, 1);
+  color: white;
+}

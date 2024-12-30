@@ -4,10 +4,11 @@ import DashboardHeader from "../components/DashboardPage/DashboardHeader";
 import FoldersStrip from "../components/DashboardPage/FoldersStrip";
 import Forms from "../components/DashboardPage/Forms";
 import {
+  getFolderForms,
   getUserDetails,
   getWorkspaceFolders,
   getWorkspaceForms,
-} from "../utils/apiUtil"; // Add getWorkspaceForms
+} from "../utils/apiUtil";
 import {
   setLoaded,
   setLoading,
@@ -23,7 +24,11 @@ import {
   getWorkspaceFormsSuccess,
   selectWorkspace,
   setAccessLevel,
+  setFolderForms,
+  setSelectedFolder,
 } from "../redux/reducers/workspaceReducer";
+import CreateFolderModal from "../components/DashboardPage/CreateFolderModal";
+import CreateFormModal from "../components/DashboardPage/CreateFormModal";
 
 function DashboardPage() {
   const dispatch = useDispatch();
@@ -31,19 +36,18 @@ function DashboardPage() {
   const loading = useSelector((store) => store.user.loading);
   const foldersLoading = useSelector((store) => store.workspace.loading);
   const folders = useSelector((store) => store.workspace.folders);
-  const forms = useSelector((store) => store.workspace.forms); // Get workspace forms
+  const forms = useSelector((store) => store.workspace.forms);
   const workspaces = useSelector((store) => store.user.userInfo.workspaces);
   const [showCreateFolderModel, setShowCreateFolderModel] = useState(false);
+  const [showCreateFormModal, setShowCreateFormModel] = useState(false);
   const selectedWorkspace = useSelector(
     (store) => store.workspace.selectedWorkspace
   );
-  const isSharedWorkspaceFolders = useSelector(
-    (store) => store.workspace.isSharedWorkspaceFolders
-  );
-  const isSharedWorkspaceForms = useSelector(
-    (store) => store.workspace.isSharedWorkspaceForms
+  const isSharedWorkspace = useSelector(
+    (store) => store.workspace.isSharedWorkspace
   );
   const accessLevel = useSelector((store) => store.workspace.accessLevel);
+  const stateFolder = useSelector((store) => store.workspace.folders);
 
   useEffect(() => {
     const fetchUserDetails = async () => {
@@ -72,7 +76,7 @@ function DashboardPage() {
       const fetchWorkspaceFolders = async () => {
         const response = await getWorkspaceFolders(selectedWorkspace._id);
         if (response.success) {
-          dispatch(getWorkspaceFoldersSuccess(response)); // Store folders and isSharedWorkspace flag
+          dispatch(getWorkspaceFoldersSuccess(response));
           dispatch(setAccessLevel(response?.accessLevel));
         } else {
           toast.error("Failed to fetch workspace folders");
@@ -80,12 +84,11 @@ function DashboardPage() {
       };
       fetchWorkspaceFolders();
 
-      // Fetch forms from the workspace directly (outside of folders)
       const fetchWorkspaceForms = async () => {
         dispatch(getWorkspaceFormsRequest());
-        const response = await getWorkspaceForms(selectedWorkspace._id); // Get forms from workspace
+        const response = await getWorkspaceForms(selectedWorkspace._id);
         if (response.success) {
-          dispatch(getWorkspaceFormsSuccess(response)); // Store forms and isSharedWorkspace flag
+          dispatch(getWorkspaceFormsSuccess(response.forms));
           dispatch(setAccessLevel(response?.accessLevel));
         } else {
           toast.error("Failed to fetch workspace forms");
@@ -95,48 +98,86 @@ function DashboardPage() {
     }
   }, [selectedWorkspace, dispatch]);
 
+  // selectFolder function to log the folder
+  const selectFolder = async (workspace, folder) => {
+    try {
+      const response = await getFolderForms(workspace._id, folder._id);
+      if (response.success) {
+        dispatch(setSelectedFolder(folder._id));
+        console.log(response.forms);
+        dispatch(
+          setFolderForms({ folderId: folder._id, forms: response.forms })
+        );
+      }
+    } catch (error) {
+      toast.error(error.message || "Error creating form");
+    }
+  };
+
   if (loading || foldersLoading) {
     return <Loader />;
   }
 
   return (
-    <div
-      className={`${
-        darkMode ? styles.mainContainerDark : styles.mainContainerLight
-      } ${styles.mainContainer}`}
-    >
-      <DashboardHeader
-        workspaces={workspaces}
-        selectedWorkspace={selectedWorkspace}
-        setSelectedWorkspace={(workspace) =>
-          dispatch(selectWorkspace(workspace))
-        }
-      />
+    <div className={styles.containerWrapper}>
       <div
-        className={`${darkMode ? styles.bgDark : styles.bgLight} ${
-          styles.dashboardContentContainer
-        }`}
+        className={`${
+          darkMode ? styles.mainContainerDark : styles.mainContainerLight
+        } ${styles.mainContainer}`}
       >
-        <div>
-          {foldersLoading ? (
-            <Loader />
-          ) : (
-            <FoldersStrip
-              folders={folders}
-              isSharedWorkspace={isSharedWorkspaceFolders} // Pass isSharedWorkspace flag for folders
+        <DashboardHeader
+          workspaces={workspaces}
+          selectedWorkspace={selectedWorkspace}
+          setSelectedWorkspace={(workspace) =>
+            dispatch(selectWorkspace(workspace))
+          }
+          isSharedWorkspaceFolders={isSharedWorkspace}
+        />
+        <div
+          className={`${darkMode ? styles.bgDark : styles.bgLight} ${
+            styles.dashboardContentContainer
+          }`}
+        >
+          <div>
+            {foldersLoading ? (
+              <Loader />
+            ) : (
+              <FoldersStrip
+                folders={folders}
+                isSharedWorkspace={isSharedWorkspace}
+                accessLevel={accessLevel}
+                openCreateFolderModal={() => setShowCreateFolderModel(true)}
+                selectedWorkspace={selectedWorkspace}
+                selectFolder={selectFolder} // Pass the selectFolder function here
+              />
+            )}
+          </div>
+          <div>
+            <Forms
+              forms={forms}
+              isSharedWorkspace={isSharedWorkspace}
               accessLevel={accessLevel}
+              openCreateFormModal={() => setShowCreateFormModel(true)}
             />
-          )}
-        </div>
-        <div>
-          <Forms
-            forms={forms}
-            isSharedWorkspace={isSharedWorkspaceForms} // Pass isSharedWorkspace flag for forms
-            accessLevel={accessLevel}
-          />{" "}
-          {/* Pass workspace forms here */}
+          </div>
         </div>
       </div>
+      {showCreateFolderModel && (
+        <div className={styles.createFolderModal}>
+          <CreateFolderModal
+            onClose={() => setShowCreateFolderModel(false)}
+            selectedWorkspace={selectedWorkspace}
+          />
+        </div>
+      )}
+      {showCreateFormModal && (
+        <div className={styles.createFormModal}>
+          <CreateFormModal
+            onClose={() => setShowCreateFormModel(false)}
+            selectedWorkspace={selectedWorkspace}
+          />
+        </div>
+      )}
     </div>
   );
 }
