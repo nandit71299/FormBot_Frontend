@@ -11,7 +11,6 @@ function FoldersStrip({
   openCreateFolderModal,
   selectedWorkspace,
   selectFolder,
-  openConfirmtionModal,
   setDeleteData,
 }) {
   const darkMode = useSelector((store) => store.theme.darkMode);
@@ -22,8 +21,7 @@ function FoldersStrip({
       toast.error("Something went wrong");
       return;
     }
-    setDeleteData(workspace._id, folderId);
-    openConfirmtionModal();
+    setDeleteData(workspace._id, folderId); // Update the state with the folder data
   };
 
   return (
@@ -48,52 +46,52 @@ function FoldersStrip({
           )}
         </button>
 
-        {folders.map((folder) => (
-          <div
-            key={folder._id}
-            className={`${
-              darkMode
-                ? styles.folderItemContainerDark
-                : styles.folderItemContainerLight
-            } ${
-              selectedFolder === folder._id
-                ? darkMode
-                  ? styles.selectedDark
-                  : styles.selectedLight
-                : ""
-            }`}
-          >
+        {folders.map((folder) => {
+          return (
             <div
+              key={folder._id}
               className={`${
-                darkMode ? styles.folderItemDark : styles.folderItemLight
-              } `}
-              onClick={() => {
-                selectFolder(selectedWorkspace, folder);
-              }}
-            >
-              {folder.folderName}
-            </div>
-            <button
-              data-tooltip-id="disabled-to-edit"
-              className={`${styles.delIconContainer} ${
-                accessLevel === "view" && styles.disbaledBtn
+                darkMode
+                  ? styles.folderItemContainerDark
+                  : styles.folderItemContainerLight
+              } ${
+                selectedFolder === folder._id
+                  ? darkMode
+                    ? styles.selectedDark
+                    : styles.selectedLight
+                  : ""
               }`}
-              disabled={accessLevel === "view" ? true : false}
-              onClick={() => handleDelete(selectedWorkspace, folder._id)}
             >
-              <i>
+              <div
+                className={`${
+                  darkMode ? styles.folderItemDark : styles.folderItemLight
+                } `}
+                onClick={() => {
+                  selectFolder(selectedWorkspace, folder);
+                }}
+              >
+                {folder.folderName}
+              </div>
+              <button
+                data-tooltip-id="disabled-to-edit"
+                className={`${styles.delIconContainer} ${
+                  accessLevel === "view" && styles.disbaledBtn
+                }`}
+                disabled={accessLevel === "view" ? true : false}
+                onClick={() => handleDelete(selectedWorkspace, folder._id)}
+              >
                 <i className="fa-solid fa-trash-can"></i>
-              </i>
-              {accessLevel === "view" && (
-                <Tooltip
-                  id="disabled-to-edit"
-                  place="bottom"
-                  content="You don't have permission to make edits to this workspace"
-                />
-              )}
-            </button>
-          </div>
-        ))}
+                {accessLevel === "view" && (
+                  <Tooltip
+                    id="disabled-to-edit"
+                    place="bottom"
+                    content="You don't have permission to make edits to this workspace"
+                  />
+                )}
+              </button>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

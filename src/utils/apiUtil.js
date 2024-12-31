@@ -373,3 +373,23 @@ export const deleteFolder = async (workspaceId, folderId) => {
     }
   }
 };
+
+export const deleteForm = async (workspaceId, folderId, formId) => {
+  try {
+    // Check if folderId is defined, otherwise omit it from the URL
+    const url = folderId
+      ? `${API_URL}/forms/delete/${workspaceId}/${formId}/${folderId}`
+      : `${API_URL}/forms/delete/${workspaceId}/${formId}`;
+
+    const response = await axios.delete(url, {
+      headers: {
+        authorization: localStorage.getItem("token"),
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting form:", error);
+    throw new Error(error.response?.data?.message || "Error deleting form");
+  }
+};

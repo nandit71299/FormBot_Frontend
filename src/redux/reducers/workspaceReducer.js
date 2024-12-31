@@ -65,8 +65,24 @@ const workspaceSlice = createSlice({
     // New action to remove a folder from the state after it's deleted
     deleteFolderSuccess: (state, action) => {
       state.folders = state.folders.filter(
-        (folder) => folder._id !== action.payload.folderId
+        (folder) => folder._id !== action.payload.folderId // Since payload is just folderId
       );
+    },
+    // New action to remove a form from the workspace forms array
+    deleteWorkspaceFormSuccess: (state, action) => {
+      const { formId } = action.payload;
+      state.forms = state.forms.filter((form) => form._id !== formId);
+    },
+    // New action to remove a form from a specific folder's forms array
+    deleteFolderFormSuccess: (state, action) => {
+      const { folderId, formId } = action.payload;
+      state.folders = state.folders.map((folder) => {
+        if (folder._id === folderId) {
+          // Filter out the form with the matching formId within the folder
+          folder.forms = folder.forms.filter((form) => form._id !== formId);
+        }
+        return folder;
+      });
     },
   },
 });
@@ -84,7 +100,9 @@ export const {
   setSelectedFolder,
   setFolderForms,
   setLoaded,
-  deleteFolderSuccess, // New action export
+  deleteFolderSuccess,
+  deleteWorkspaceFormSuccess, // Export new action
+  deleteFolderFormSuccess, // Export new action
 } = workspaceSlice.actions;
 
 export default workspaceSlice.reducer;

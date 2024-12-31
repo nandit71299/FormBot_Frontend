@@ -9,7 +9,7 @@ import {
   getWorkspaceFolders,
   getWorkspaceForms,
   inviteByEmail,
-  deleteFolder, // Assuming this function exists in your utils/apiUtil
+  deleteFolder,
 } from "../utils/apiUtil";
 import {
   setLoaded,
@@ -20,7 +20,9 @@ import Loader from "../components/Loader";
 import styles from "./DashboardPage.module.css";
 import { toast } from "react-toastify";
 import {
+  deleteFolderFormSuccess,
   deleteFolderSuccess,
+  deleteWorkspaceFormSuccess,
   getWorkspaceFoldersRequest,
   getWorkspaceFoldersSuccess,
   getWorkspaceFormsRequest,
@@ -33,7 +35,8 @@ import {
 import CreateFolderModal from "../components/DashboardPage/CreateFolderModal";
 import CreateFormModal from "../components/DashboardPage/CreateFormModal";
 import InviteModal from "../components/DashboardPage/InviteModal";
-import DeleteConfirmationModal from "../components/DashboardPage/DeleteConfirmationModal";
+import DeleteFolderConfirmationModal from "../components/DashboardPage/DeleteConfirmationModal";
+import DeleteFormConfirmationModal from "../components/DashboardPage/DeleteFormConfirmationModal";
 
 function DashboardPage() {
   const dispatch = useDispatch();
@@ -54,6 +57,7 @@ function DashboardPage() {
   const accessLevel = useSelector((store) => store.workspace.accessLevel);
   const stateFolder = useSelector((store) => store.workspace.folders);
   const [inviteModalOpen, setInviteModalOpen] = useState(false);
+
   const sendInvite = async (email, access) => {
     try {
       const response = await inviteByEmail(email, access);
@@ -69,43 +73,51 @@ function DashboardPage() {
     }
   };
 
-  const [deleteConfirmationModalOpen, setDeleteConfirmationModalOpen] =
-    useState(false);
-
-  const [selectedToDelete, setSelectedToDelete] = useState({
+  const [deleteFolderModalOpen, setDeleteFolderModalOpen] = useState(false);
+  const [selectedFolderToDelete, setSelectedFolderToDelete] = useState({
     workspaceId: "",
     folderId: "",
   });
-
-  const openConfirmtionModal = () => {
-    setDeleteConfirmationModalOpen(true);
-  };
-
-  const setDeleteData = (workspaceId, folderId) => {
-    setSelectedToDelete({
-      workspaceId,
-      folderId,
-    });
-  };
-
-  const handleDeleteConfirmation = async () => {
-    try {
-      const response = await deleteFolder(
-        selectedToDelete.workspaceId,
-        selectedToDelete.folderId
-      );
-      if (response.success) {
-        // Dispatch action to remove folder from state
-        dispatch(deleteFolderSuccess({ folderId: selectedToDelete.folderId }));
-        toast.success("Folder deleted successfully");
-        setDeleteConfirmationModalOpen(false);
-      } else {
-        toast.error(response.message || "Failed to delete folder");
-      }
-    } catch (error) {
-      console.log(error);
-      toast.error("Error deleting folder");
+  const handleFolderDeleteSuccess = async (folderId) => {
+    const response = await deleteFolder(selectedWorkspace._id, folderId);
+    if (response.success) {
+      dispatch(deleteFolderSuccess({ folderId }));
+      toast.success("Folder deleted successfully");
+      setDeleteFolderModalOpen(false); // Close modal after delete
+    } else {
+      toast.error(response?.message || "Failed to delete folder");
     }
+  };
+  const setDeleteData = (workspaceId, folderId) => {
+    setSelectedFolderToDelete((prev) => {
+      return { ...prev, workspaceId: workspaceId, folderId: folderId };
+    });
+    setDeleteFolderModalOpen(true);
+  };
+  useEffect(() => {
+    console.log("selectedFolderToDelete updated:", selectedFolderToDelete);
+  }, [selectedFolderToDelete]); // This will log the updated state whenever it changes
+
+  const [deleteFormModalOpen, setDeleteFormModalOpen] = useState(false);
+  const [formToDelete, setFormToDelete] = useState(null);
+
+  const openDeleteFormModal = (workspaceId, folderId, formId) => {
+    setFormToDelete({ workspaceId, folderId, formId });
+    setDeleteFormModalOpen(true);
+  };
+
+  const handleFormDeleteSuccess = (formId) => {
+    const { folderId, workspaceId } = formToDelete;
+
+    if (folderId) {
+      dispatch(deleteFolderFormSuccess({ folderId, formId }));
+      toast.success("Form deleted from folder successfully");
+    } else {
+      dispatch(deleteWorkspaceFormSuccess({ formId }));
+      toast.success("Workspace form deleted successfully");
+    }
+
+    setDeleteFormModalOpen(false); // Close the modal after deletion
   };
 
   useEffect(() => {
@@ -207,8 +219,7 @@ function DashboardPage() {
                 openCreateFolderModal={() => setShowCreateFolderModel(true)}
                 selectedWorkspace={selectedWorkspace}
                 selectFolder={selectFolder}
-                openConfirmtionModal={openConfirmtionModal}
-                setDeleteData={setDeleteData}
+                setDeleteData={setDeleteData} // Passing the setDeleteData function to FoldersStrip
               />
             )}
           </div>
@@ -218,42 +229,42 @@ function DashboardPage() {
               isSharedWorkspace={isSharedWorkspace}
               accessLevel={accessLevel}
               openCreateFormModal={() => setShowCreateFormModel(true)}
+              openDeleteFormModal={openDeleteFormModal}
             />
           </div>
         </div>
       </div>
       {showCreateFolderModel && (
-        <div className={styles.createFolderModal}>
-          <CreateFolderModal
-            onClose={() => setShowCreateFolderModel(false)}
-            selectedWorkspace={selectedWorkspace}
-          />
-        </div>
+        <CreateFolderModal
+          onClose={() => setShowCreateFolderModel(false)}
+          selectedWorkspace={selectedWorkspace}
+        />
       )}
       {showCreateFormModal && (
-        <div className={styles.createFormModal}>
-          <CreateFormModal
-            onClose={() => setShowCreateFormModel(false)}
-            selectedWorkspace={selectedWorkspace}
-          />
-        </div>
+        <CreateFormModal
+          onClose={() => setShowCreateFormModel(false)}
+          selectedWorkspace={selectedWorkspace}
+        />
       )}
       {inviteModalOpen && (
-        <div className={styles.inviteModal}>
-          <InviteModal
-            onClose={() => setInviteModalOpen(false)}
-            onSendInvite={sendInvite}
-          />
-        </div>
+        <InviteModal
+          onClose={() => setInviteModalOpen(false)}
+          onSendInvite={sendInvite}
+        />
       )}
-      {deleteConfirmationModalOpen && (
-        <div className={styles.deleteConfirmationModel}>
-          <DeleteConfirmationModal
-            onConfirm={handleDeleteConfirmation}
-            openConfirmtionModal={openConfirmtionModal}
-            onClose={() => setDeleteConfirmationModalOpen(false)}
-          />
-        </div>
+      {deleteFolderModalOpen && (
+        <DeleteFolderConfirmationModal
+          onConfirm={handleFolderDeleteSuccess}
+          onClose={() => setDeleteFolderModalOpen(false)}
+          folderData={selectedFolderToDelete}
+        />
+      )}
+      {deleteFormModalOpen && (
+        <DeleteFormConfirmationModal
+          onConfirm={handleFormDeleteSuccess}
+          onClose={() => setDeleteFormModalOpen(false)}
+          formData={formToDelete}
+        />
       )}
     </div>
   );

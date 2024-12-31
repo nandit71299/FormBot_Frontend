@@ -3,7 +3,13 @@ import { useSelector } from "react-redux";
 import styles from "./Forms.module.css";
 import { Tooltip } from "react-tooltip";
 
-function Forms({ forms, isSharedWorkspace, accessLevel, openCreateFormModal }) {
+const Forms = ({
+  forms,
+  isSharedWorkspace,
+  accessLevel,
+  openCreateFormModal,
+  openDeleteFormModal,
+}) => {
   const darkMode = useSelector((store) => store.theme.darkMode);
   const selectedFolder = useSelector((store) => store.workspace.selectedFolder);
   const folders = useSelector((store) => store.workspace.folders); // Access the folders from the Redux store
@@ -13,7 +19,6 @@ function Forms({ forms, isSharedWorkspace, accessLevel, openCreateFormModal }) {
 
   if (selectedFolder) {
     // Find the selected folder from the workspace's folders
-
     const folder = folders.find((folder) => folder._id === selectedFolder);
 
     if (folder) {
@@ -82,8 +87,17 @@ function Forms({ forms, isSharedWorkspace, accessLevel, openCreateFormModal }) {
             <div className={styles.formItem}>
               <p>{form.formName}</p>
             </div>
-            {!isSharedWorkspace && (
-              <div className={styles.delIconContainer}>
+
+            {/* Only show the delete button if not in a shared workspace and user has edit access */}
+            {!isSharedWorkspace && accessLevel === "edit" && (
+              <div
+                className={styles.delIconContainer}
+                onClick={() => {
+                  // Open the form deletion modal with the appropriate data
+                  const folderId = form.folderId || null; // Handle optional folderId
+                  openDeleteFormModal(form.workspace, folderId, form._id);
+                }}
+              >
                 <i className={`fa-solid fa-trash-can ${styles.delIcon}`}></i>
               </div>
             )}
@@ -92,6 +106,6 @@ function Forms({ forms, isSharedWorkspace, accessLevel, openCreateFormModal }) {
       })}
     </div>
   );
-}
+};
 
 export default Forms;
