@@ -27,6 +27,19 @@ export const verifyToken = async () => {
   }
 };
 
+export const register = async (data) => {
+  try {
+    const response = await axios.post(`${API_URL}/auth/signup`, data);
+    return response.data;
+  } catch (error) {
+    if (error.response && error.response.data) {
+      throw new Error(error.response.data.message || "Failed to register.");
+    } else {
+      throw new Error("Something went wrong. Please try again.");
+    }
+  }
+};
+
 export const login = async (data) => {
   try {
     const response = await axios.post(`${API_URL}/auth/login`, data);
@@ -295,6 +308,61 @@ export const createFormInsideFolder = async (
         success: false,
         message:
           error.response.data.message || "Failed to create form inside folder.",
+      };
+    } else {
+      console.error("Error:", error); // Log generic error
+      return {
+        success: false,
+        message: error.message || "An error occurred.",
+      };
+    }
+  }
+};
+
+export const inviteByEmail = async (email, access) => {
+  try {
+    const response = await axios.put(
+      `${API_URL}/workspace/shareworkspace/${email}/${access}`,
+      null,
+      {
+        headers: {
+          authorization: localStorage.getItem("token"),
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      return {
+        success: false,
+        message: error.response.data.message || "Failed to invite user.",
+      };
+    } else {
+      console.error("Error:", error); // Log generic error
+      return {
+        success: false,
+        message: error.message || "An error occurred.",
+      };
+    }
+  }
+};
+
+export const deleteFolder = async (workspaceId, folderId) => {
+  try {
+    const response = await axios.delete(
+      `${API_URL}/folder/delete/${workspaceId}/${folderId}`,
+      {
+        headers: {
+          authorization: localStorage.getItem("token"),
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      return {
+        success: false,
+        message: error.response.data.message || "Failed to delete folder.",
       };
     } else {
       console.error("Error:", error); // Log generic error

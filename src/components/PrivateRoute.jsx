@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import { verifyToken } from "../utils/apiUtil"; // Assuming you have a token verification utility
+import Loader from "./Loader";
 
 const PrivateRoute = ({ children }) => {
   const [isVerified, setIsVerified] = useState(false);
@@ -26,7 +27,11 @@ const PrivateRoute = ({ children }) => {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>; // Show loading until verification completes
+    return (
+      <div>
+        <Loader />
+      </div>
+    ); // Show loading until verification completes
   }
 
   return isVerified ? children : <Navigate to="/login" replace />; // Render children if verified, else redirect

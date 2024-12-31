@@ -179,3 +179,7 @@
 .shareBtnDisabled:hover {
   background-color: gray;
 }
+
+.logoutText {
+  color: rgba(255, 165, 76, 1);
+}

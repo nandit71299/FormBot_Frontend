@@ -5,15 +5,18 @@ import { toggleTheme } from "../../redux/reducers/themeReducer";
 import { toggleAppTheme } from "../../utils/apiUtil";
 import { toast } from "react-toastify";
 import { selectWorkspace } from "../../redux/reducers/workspaceReducer"; // Ensure this action is imported
+import { useNavigate } from "react-router-dom";
 
 function DashboardHeader({
   workspaces,
   selectedWorkspace,
   setSelectedWorkspace,
   isSharedWorkspaceFolders,
+  openInviteModal,
 }) {
   const darkMode = useSelector((store) => store.theme.darkMode);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   useEffect(() => {
@@ -89,8 +92,21 @@ function DashboardHeader({
               <div className={styles.dropdownItem}>No Workspaces Available</div>
             )}
             <div className={styles.divider}></div>
-            <div className={styles.dropdownItem}>Settings</div>
-            <div className={styles.dropdownItem}>Log Out</div>
+            <div
+              className={styles.dropdownItem}
+              onClick={() => navigate("/settings")}
+            >
+              Settings
+            </div>
+            <div
+              className={`${styles.dropdownItem} ${styles.logoutText}`}
+              onClick={() => {
+                navigate("/");
+                localStorage.removeItem("token");
+              }}
+            >
+              Log Out
+            </div>
           </div>
         )}
       </div>
@@ -113,6 +129,9 @@ function DashboardHeader({
           className={`${styles.shareBtn} ${
             isSharedWorkspaceFolders && styles.shareBtnDisabled
           }`}
+          onClick={() => {
+            isSharedWorkspaceFolders ? "" : openInviteModal();
+          }}
         >
           Share
         </button>

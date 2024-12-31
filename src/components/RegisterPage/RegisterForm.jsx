@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import styles from "./RegisterForm.module.css";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { register } from "../../utils/apiUtil";
 
 function RegisterForm() {
   const [formData, setFormData] = useState({
@@ -10,20 +12,27 @@ function RegisterForm() {
     confirmPassword: "", // New field for confirm password
   });
 
-  const [error, setError] = useState(""); // To store any validation errors
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Validate that password and confirmPassword match
     if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match");
+      toast.error("Passwords do not match");
       return;
     }
-
-    setError("");
-    console.log("Form submitted", formData); // For now just logging the form data
+    try {
+      const response = await register(formData);
+      if (response.success) {
+        toast.success("Registration successful! You can now login.");
+        navigate("/login");
+      } else {
+        toast.error(response.message || "Error registering");
+      }
+    } catch (error) {
+      toast.error(error.message || "Error registering");
+    }
   };
 
   return (
@@ -84,8 +93,6 @@ function RegisterForm() {
             placeholder="********"
           />
         </div>
-
-        {error && <p className={styles.error}>{error}</p>}
 
         <div>
           <button type="submit" className={styles.loginBtn}>

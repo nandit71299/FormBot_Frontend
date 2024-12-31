@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./FolderStrip.module.css";
 import { useSelector } from "react-redux";
 import { Tooltip } from "react-tooltip";
+import { toast } from "react-toastify";
 
 function FoldersStrip({
   folders,
@@ -9,18 +10,29 @@ function FoldersStrip({
   accessLevel,
   openCreateFolderModal,
   selectedWorkspace,
-  selectFolder, // Destructure selectFolder prop here
+  selectFolder,
+  openConfirmtionModal,
+  setDeleteData,
 }) {
   const darkMode = useSelector((store) => store.theme.darkMode);
   const selectedFolder = useSelector((store) => store.workspace.selectedFolder);
-  console.log(selectedFolder);
+
+  const handleDelete = (workspace, folderId) => {
+    if (!workspace || !folderId) {
+      toast.error("Something went wrong");
+      return;
+    }
+    setDeleteData(workspace._id, folderId);
+    openConfirmtionModal();
+  };
+
   return (
     <div className={styles.mainContainer}>
       <div className={styles.folderContainer}>
         <button
           data-tooltip-id="disabled-to-edit"
           onClick={() => {
-            if (accessLevel === "edit") openCreateFolderModal(true); // This should only be triggered by the button click
+            if (accessLevel === "edit") openCreateFolderModal(true);
           }}
           className={`${
             darkMode ? styles.createBtnDark : styles.createBtnLight
@@ -36,53 +48,52 @@ function FoldersStrip({
           )}
         </button>
 
-        {folders.map((folder) => {
-          return (
+        {folders.map((folder) => (
+          <div
+            key={folder._id}
+            className={`${
+              darkMode
+                ? styles.folderItemContainerDark
+                : styles.folderItemContainerLight
+            } ${
+              selectedFolder === folder._id
+                ? darkMode
+                  ? styles.selectedDark
+                  : styles.selectedLight
+                : ""
+            }`}
+          >
             <div
-              key={folder._id}
               className={`${
-                darkMode
-                  ? styles.folderItemContainerDark
-                  : styles.folderItemContainerLight
-              } ${
-                selectedFolder === folder._id
-                  ? darkMode
-                    ? styles.selectedDark
-                    : styles.selectedLight
-                  : ""
-              }`}
+                darkMode ? styles.folderItemDark : styles.folderItemLight
+              } `}
+              onClick={() => {
+                selectFolder(selectedWorkspace, folder);
+              }}
             >
-              <div
-                className={`${
-                  darkMode ? styles.folderItemDark : styles.folderItemLight
-                } `}
-                onClick={() => {
-                  selectFolder(selectedWorkspace, folder); // This will log the folder to the console
-                }}
-              >
-                {folder.folderName}
-              </div>
-              <button
-                data-tooltip-id="disabled-to-edit"
-                className={`${styles.delIconContainer} ${
-                  accessLevel === "view" && styles.disbaledBtn
-                }`}
-                disabled={accessLevel === "view" ? true : false}
-              >
-                <i>
-                  <i className="fa-solid fa-trash-can"></i>
-                </i>
-                {accessLevel === "view" && (
-                  <Tooltip
-                    id="disabled-to-edit"
-                    place="bottom"
-                    content="You don't have permission to make edits to this workspace"
-                  />
-                )}
-              </button>
+              {folder.folderName}
             </div>
-          );
-        })}
+            <button
+              data-tooltip-id="disabled-to-edit"
+              className={`${styles.delIconContainer} ${
+                accessLevel === "view" && styles.disbaledBtn
+              }`}
+              disabled={accessLevel === "view" ? true : false}
+              onClick={() => handleDelete(selectedWorkspace, folder._id)}
+            >
+              <i>
+                <i className="fa-solid fa-trash-can"></i>
+              </i>
+              {accessLevel === "view" && (
+                <Tooltip
+                  id="disabled-to-edit"
+                  place="bottom"
+                  content="You don't have permission to make edits to this workspace"
+                />
+              )}
+            </button>
+          </div>
+        ))}
       </div>
     </div>
   );

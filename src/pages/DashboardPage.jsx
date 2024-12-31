@@ -8,6 +8,8 @@ import {
   getUserDetails,
   getWorkspaceFolders,
   getWorkspaceForms,
+  inviteByEmail,
+  deleteFolder, // Assuming this function exists in your utils/apiUtil
 } from "../utils/apiUtil";
 import {
   setLoaded,
@@ -18,6 +20,7 @@ import Loader from "../components/Loader";
 import styles from "./DashboardPage.module.css";
 import { toast } from "react-toastify";
 import {
+  deleteFolderSuccess,
   getWorkspaceFoldersRequest,
   getWorkspaceFoldersSuccess,
   getWorkspaceFormsRequest,
@@ -29,6 +32,8 @@ import {
 } from "../redux/reducers/workspaceReducer";
 import CreateFolderModal from "../components/DashboardPage/CreateFolderModal";
 import CreateFormModal from "../components/DashboardPage/CreateFormModal";
+import InviteModal from "../components/DashboardPage/InviteModal";
+import DeleteConfirmationModal from "../components/DashboardPage/DeleteConfirmationModal";
 
 function DashboardPage() {
   const dispatch = useDispatch();
@@ -48,6 +53,60 @@ function DashboardPage() {
   );
   const accessLevel = useSelector((store) => store.workspace.accessLevel);
   const stateFolder = useSelector((store) => store.workspace.folders);
+  const [inviteModalOpen, setInviteModalOpen] = useState(false);
+  const sendInvite = async (email, access) => {
+    try {
+      const response = await inviteByEmail(email, access);
+      if (response.success) {
+        toast.success("Workspace shared successfully");
+        setInviteModalOpen(false);
+      } else {
+        toast.error(response?.message || "Failed to share workspace");
+      }
+    } catch (error) {
+      console.log("error", error);
+      toast.error(error.message || "Failed to invite user.");
+    }
+  };
+
+  const [deleteConfirmationModalOpen, setDeleteConfirmationModalOpen] =
+    useState(false);
+
+  const [selectedToDelete, setSelectedToDelete] = useState({
+    workspaceId: "",
+    folderId: "",
+  });
+
+  const openConfirmtionModal = () => {
+    setDeleteConfirmationModalOpen(true);
+  };
+
+  const setDeleteData = (workspaceId, folderId) => {
+    setSelectedToDelete({
+      workspaceId,
+      folderId,
+    });
+  };
+
+  const handleDeleteConfirmation = async () => {
+    try {
+      const response = await deleteFolder(
+        selectedToDelete.workspaceId,
+        selectedToDelete.folderId
+      );
+      if (response.success) {
+        // Dispatch action to remove folder from state
+        dispatch(deleteFolderSuccess({ folderId: selectedToDelete.folderId }));
+        toast.success("Folder deleted successfully");
+        setDeleteConfirmationModalOpen(false);
+      } else {
+        toast.error(response.message || "Failed to delete folder");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Error deleting folder");
+    }
+  };
 
   useEffect(() => {
     const fetchUserDetails = async () => {
@@ -98,13 +157,11 @@ function DashboardPage() {
     }
   }, [selectedWorkspace, dispatch]);
 
-  // selectFolder function to log the folder
   const selectFolder = async (workspace, folder) => {
     try {
       const response = await getFolderForms(workspace._id, folder._id);
       if (response.success) {
         dispatch(setSelectedFolder(folder._id));
-        console.log(response.forms);
         dispatch(
           setFolderForms({ folderId: folder._id, forms: response.forms })
         );
@@ -132,6 +189,7 @@ function DashboardPage() {
             dispatch(selectWorkspace(workspace))
           }
           isSharedWorkspaceFolders={isSharedWorkspace}
+          openInviteModal={() => setInviteModalOpen(true)}
         />
         <div
           className={`${darkMode ? styles.bgDark : styles.bgLight} ${
@@ -148,7 +206,9 @@ function DashboardPage() {
                 accessLevel={accessLevel}
                 openCreateFolderModal={() => setShowCreateFolderModel(true)}
                 selectedWorkspace={selectedWorkspace}
-                selectFolder={selectFolder} // Pass the selectFolder function here
+                selectFolder={selectFolder}
+                openConfirmtionModal={openConfirmtionModal}
+                setDeleteData={setDeleteData}
               />
             )}
           </div>
@@ -175,6 +235,23 @@ function DashboardPage() {
           <CreateFormModal
             onClose={() => setShowCreateFormModel(false)}
             selectedWorkspace={selectedWorkspace}
+          />
+        </div>
+      )}
+      {inviteModalOpen && (
+        <div className={styles.inviteModal}>
+          <InviteModal
+            onClose={() => setInviteModalOpen(false)}
+            onSendInvite={sendInvite}
+          />
+        </div>
+      )}
+      {deleteConfirmationModalOpen && (
+        <div className={styles.deleteConfirmationModel}>
+          <DeleteConfirmationModal
+            onConfirm={handleDeleteConfirmation}
+            openConfirmtionModal={openConfirmtionModal}
+            onClose={() => setDeleteConfirmationModalOpen(false)}
           />
         </div>
       )}
