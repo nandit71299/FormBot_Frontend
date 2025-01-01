@@ -9,6 +9,8 @@ import { ToastContainer } from "react-toastify";
 import DashboardPage from "./pages/DashboardPage";
 import { useDispatch, useSelector } from "react-redux";
 import { setTheme } from "./redux/reducers/themeReducer";
+import FormBuilder from "./pages/FormBuilder";
+import SettingsPage from "./pages/SettingsPage";
 
 function App() {
   const theme = localStorage.getItem("theme");
@@ -33,6 +35,22 @@ function App() {
           element={
             <PrivateRoute>
               <DashboardPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/formbuilder/:workspaceId?/:formId?/:folderId?"
+          element={
+            <PrivateRoute>
+              <FormBuilder />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/settings"
+          element={
+            <PrivateRoute>
+              <SettingsPage />
             </PrivateRoute>
           }
         />

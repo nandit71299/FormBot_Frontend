@@ -26,12 +26,18 @@ function DashboardHeader({
   }, [workspaces, selectedWorkspace, dispatch]);
 
   const changeTheme = async () => {
-    const response = await toggleAppTheme(darkMode ? "light" : "dark");
-    if (response.success) {
-      dispatch(toggleTheme());
-      localStorage.setItem("theme", response?.user?.theme || "true");
-    } else {
-      toast.error("Failed to toggle theme");
+    try {
+      const response = await toggleAppTheme(darkMode ? "light" : "dark");
+      if (response.success) {
+        dispatch(toggleTheme());
+        localStorage.setItem("theme", response?.user?.theme || "true");
+      } else {
+        toast.error("Looks like your login is expired. Please login again.");
+      }
+    } catch (error) {
+      toast.error(
+        error.message || "Looks like your login is expired. Please login again."
+      );
     }
   };
 

@@ -56,11 +56,15 @@ export const login = async (data) => {
 
 export const toggleAppTheme = async (mode) => {
   try {
-    const response = await axios.put(`${API_URL}/theme/${mode}`, null, {
-      headers: {
-        authorization: localStorage.getItem("token"),
-      },
-    });
+    const response = await axios.put(
+      `${API_URL}/theme/change-theme?theme=${mode}`,
+      null,
+      {
+        headers: {
+          authorization: localStorage.getItem("token"),
+        },
+      }
+    );
     return response.data;
   } catch (error) {
     if (error.response && error.response.data) {
@@ -124,13 +128,11 @@ export const getUserDetails = async () => {
     }
   } catch (error) {
     if (error.response) {
-      console.error("Error response:", error.response); // Log error response
       return {
         success: false,
         message: error.response.data.message || "Failed to fetch workspaces.",
       };
     } else {
-      console.error("Error:", error); // Log generic error
       return {
         success: false,
         message: error.message || "An error occurred.",
@@ -158,13 +160,11 @@ export const getWorkspaceFolders = async (workspaceId) => {
     }
   } catch (error) {
     if (error.response) {
-      console.error("Error response:", error.response); // Log error response
       return {
         success: false,
         message: error.response.data.message || "Failed to fetch folders.",
       };
     } else {
-      console.error("Error:", error); // Log generic error
       return {
         success: false,
         message: error.message || "An error occurred.",
@@ -184,13 +184,11 @@ export const getWorkspaceForms = async (workspaceId) => {
     return response.data;
   } catch (error) {
     if (error.response) {
-      console.error("Error response:", error.response); // Log error response
       return {
         success: false,
         message: error.response.data.message || "Failed to fetch forms.",
       };
     } else {
-      console.error("Error:", error); // Log generic error
       return {
         success: false,
         message: error.message || "An error occurred.",
@@ -213,13 +211,11 @@ export const createFolder = async (data) => {
     return response.data;
   } catch (error) {
     if (error.response) {
-      console.error("Error response:", error.response); // Log error response
       return {
         success: false,
         message: error.response.data.message || "Failed to create folder.",
       };
     } else {
-      console.error("Error:", error); // Log generic error
       return {
         success: false,
         message: error.message || "An error occurred.",
@@ -242,13 +238,11 @@ export const createForm = async (data) => {
     return response.data;
   } catch (error) {
     if (error.response) {
-      console.error("Error response:", error.response); // Log error response
       return {
         success: false,
         message: error.response.data.message || "Failed to create form.",
       };
     } else {
-      console.error("Error:", error); // Log generic error
       return {
         success: false,
         message: error.message || "An error occurred.",
@@ -270,13 +264,11 @@ export const getFolderForms = async (workspaceId, folderId) => {
     return response.data;
   } catch (error) {
     if (error.response) {
-      console.error("Error response:", error.response); // Log error response
       return {
         success: false,
         message: error.response.data.message || "Failed to fetch folder forms.",
       };
     } else {
-      console.error("Error:", error); // Log generic error
       return {
         success: false,
         message: error.message || "An error occurred.",
@@ -303,14 +295,12 @@ export const createFormInsideFolder = async (
     return response.data;
   } catch (error) {
     if (error.response) {
-      console.error("Error response:", error.response); // Log error response
       return {
         success: false,
         message:
           error.response.data.message || "Failed to create form inside folder.",
       };
     } else {
-      console.error("Error:", error); // Log generic error
       return {
         success: false,
         message: error.message || "An error occurred.",
@@ -338,7 +328,6 @@ export const inviteByEmail = async (email, access) => {
         message: error.response.data.message || "Failed to invite user.",
       };
     } else {
-      console.error("Error:", error); // Log generic error
       return {
         success: false,
         message: error.message || "An error occurred.",
@@ -365,7 +354,6 @@ export const deleteFolder = async (workspaceId, folderId) => {
         message: error.response.data.message || "Failed to delete folder.",
       };
     } else {
-      console.error("Error:", error); // Log generic error
       return {
         success: false,
         message: error.message || "An error occurred.",
@@ -389,7 +377,39 @@ export const deleteForm = async (workspaceId, folderId, formId) => {
 
     return response.data;
   } catch (error) {
-    console.error("Error deleting form:", error);
-    throw new Error(error.response?.data?.message || "Error deleting form");
+    if (error.response) {
+      return {
+        success: false,
+        message: error.response.data.message || "Failed to fetch folder forms.",
+      };
+    } else {
+      return {
+        success: false,
+        message: error.message || "An error occurred.",
+      };
+    }
+  }
+};
+
+export const updateProfile = async (data) => {
+  try {
+    const response = await axios.put(`${API_URL}/auth/update-profile`, data, {
+      headers: {
+        authorization: localStorage.getItem("token"),
+      },
+    });
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      return {
+        success: false,
+        message: error.response.data.message || "Failed to update profile.",
+      };
+    } else {
+      return {
+        success: false,
+        message: error.message || "An error occurred.",
+      };
+    }
   }
 };

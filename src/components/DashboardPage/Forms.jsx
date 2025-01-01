@@ -2,6 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import styles from "./Forms.module.css";
 import { Tooltip } from "react-tooltip";
+import { useNavigate } from "react-router-dom";
 
 const Forms = ({
   forms,
@@ -13,7 +14,7 @@ const Forms = ({
   const darkMode = useSelector((store) => store.theme.darkMode);
   const selectedFolder = useSelector((store) => store.workspace.selectedFolder);
   const folders = useSelector((store) => store.workspace.folders); // Access the folders from the Redux store
-
+  const navigate = useNavigate();
   // Determine which forms to display
   let formsToDisplay = forms; // Default to workspace-level forms
 
@@ -84,7 +85,12 @@ const Forms = ({
               darkMode ? styles.formContainerDark : styles.formContainerLight
             } ${styles.formContainer}`}
           >
-            <div className={styles.formItem}>
+            <div
+              className={styles.formItem}
+              onClick={() => {
+                navigate(`/formbuilder`);
+              }}
+            >
               <p>{form.formName}</p>
             </div>
 

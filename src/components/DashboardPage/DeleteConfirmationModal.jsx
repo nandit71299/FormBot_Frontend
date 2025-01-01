@@ -3,8 +3,6 @@ import styles from "./DeleteConfirmationModal.module.css";
 import { toast } from "react-toastify";
 
 function DeleteConfirmationModal({ onConfirm, onClose, folderData }) {
-  console.log(folderData); // Should log the folder data passed from DashboardPage
-
   const handleDelete = () => {
     if (folderData) {
       onConfirm(folderData.folderId); // Pass folderId to the confirm function

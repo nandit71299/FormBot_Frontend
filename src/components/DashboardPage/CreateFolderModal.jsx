@@ -22,7 +22,7 @@ function CreateFolderModal({ onClose, selectedWorkspace }) {
 
       if (response.success) {
         dispatch(getWorkspaceFoldersRequest());
-        console.log(selectedWorkspace);
+
         const refetchFolders = await getWorkspaceFolders(selectedWorkspace._id);
         if (refetchFolders.success) {
           resaveFolders(dispatch, refetchFolders);

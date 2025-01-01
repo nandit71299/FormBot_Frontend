@@ -19,7 +19,6 @@ const DeleteFormConfirmationModal = ({ onConfirm, onClose, formData }) => {
         toast.error(response.message || "Failed to delete form");
       }
     } catch (error) {
-      console.error("Error deleting form:", error);
       toast.error(error.message || "Error deleting form");
     }
   };

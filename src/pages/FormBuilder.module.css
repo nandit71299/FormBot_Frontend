@@ -1,0 +1,83 @@
+.container {
+  display: flex;
+  height: 100vh;
+  background-color: rgba(31, 31, 35, 1);
+}
+
+.containerLight {
+  background-color: rgba(255, 255, 255, 1);
+  color: black;
+}
+.container .sidebar {
+  width: 20%;
+  padding: 10px;
+  border-right: 1px solid #333;
+}
+
+.sidebar h3 {
+  margin-bottom: 20px;
+}
+
+.optionButton {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 10px;
+  width: 100%;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.optionButton:hover {
+  background-color: #1e40af;
+}
+
+.canvas {
+  width: 80%;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.element {
+  background-color: #333;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  background-color: #444;
+  border: none;
+  color: white;
+  border-radius: 5px;
+}
+
+.button {
+  width: 100%;
+  padding: 10px;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: not-allowed; /* Disabled style */
+}
+
+.validateButton {
+  background-color: #22c55e;
+  color: white;
+  border: none;
+  padding: 10px;
+  width: 100%;
+  margin-top: 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.validateButton:hover {
+  background-color: #16a34a;
+}

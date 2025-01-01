@@ -1,0 +1,71 @@
+.sidebar {
+  width: 344px;
+  padding: 20px;
+  margin: 20px;
+  border-radius: 10px;
+}
+
+.sidebarDark {
+  border: 1px solid rgba(39, 39, 42, 1);
+  background-color: rgba(24, 24, 27, 1);
+  color: white;
+}
+
+.sidebarLight {
+  border: 1px solid rgba(0, 0, 0, 0.16);
+  background-color: rgba(255, 255, 255, 1);
+  color: black;
+  box-shadow: 0px 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.bubblesContainer {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.bubbleItem {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  width: 119px;
+  border: 1px solid rgba(39, 39, 42, 1);
+  border-radius: 5px;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+.bubbleItemLight {
+  color: black;
+  background-color: rgba(255, 255, 255, 1);
+}
+
+.bubbleItemDark {
+  border: 1px solid rgba(39, 39, 42, 1);
+  background-color: rgba(31, 31, 35, 1);
+  color: white;
+}
+
+.optionButton {
+  background-color: transparent;
+  border: none;
+  font-family: var(--font-open-sans);
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.optionButtonDark {
+  color: white;
+}
+
+.optionButtonLight {
+  color: black;
+}
+
+.sectionTitle {
+  font-family: var(--font-open-sans);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 21px;
+}

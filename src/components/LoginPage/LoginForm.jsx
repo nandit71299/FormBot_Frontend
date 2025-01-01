@@ -57,6 +57,7 @@ function LoginForm() {
               setFormData({ ...formData, email: e.target.value })
             }
             placeholder="Enter your email"
+            className={styles.input}
           />
         </div>
         <label htmlFor="password">Password</label>

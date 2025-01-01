@@ -16,7 +16,6 @@ const PrivateRoute = ({ children }) => {
           setIsVerified(true);
         }
       } catch (error) {
-        console.error("Error verifying token:", error);
         setIsVerified(false);
       } finally {
         setLoading(false);

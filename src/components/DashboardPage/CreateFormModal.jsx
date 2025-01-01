@@ -33,7 +33,6 @@ function CreateFormModal({ onClose, selectedWorkspace }) {
           dispatch(getWorkspaceFormsRequest());
           const refetchForms = await getWorkspaceForms(selectedWorkspace._id);
           if (refetchForms.success) {
-            console.log(refetchForms);
             resaveForms(dispatch, refetchForms.forms);
           } else {
             toast.error(
@@ -53,7 +52,7 @@ function CreateFormModal({ onClose, selectedWorkspace }) {
           selectedFolder,
           formName
         );
-        console.log("response", response);
+
         if (response.success) {
           dispatch(getWorkspaceFormsRequest());
           const refetchFolderForms = await getFolderForms(
@@ -61,7 +60,6 @@ function CreateFormModal({ onClose, selectedWorkspace }) {
             response?.data?.folderId
           );
           if (refetchFolderForms.success) {
-            console.log("selectedFolder", selectedFolder);
             resaveFolderForms(dispatch, {
               folderId: selectedFolder,
               forms: refetchFolderForms.forms,

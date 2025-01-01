@@ -68,7 +68,6 @@ function DashboardPage() {
         toast.error(response?.message || "Failed to share workspace");
       }
     } catch (error) {
-      console.log("error", error);
       toast.error(error.message || "Failed to invite user.");
     }
   };
@@ -94,9 +93,6 @@ function DashboardPage() {
     });
     setDeleteFolderModalOpen(true);
   };
-  useEffect(() => {
-    console.log("selectedFolderToDelete updated:", selectedFolderToDelete);
-  }, [selectedFolderToDelete]); // This will log the updated state whenever it changes
 
   const [deleteFormModalOpen, setDeleteFormModalOpen] = useState(false);
   const [formToDelete, setFormToDelete] = useState(null);
@@ -131,7 +127,6 @@ function DashboardPage() {
           toast.error("Failed to fetch user details");
         }
       } catch (error) {
-        console.error("Error fetching user details:", error);
         toast.error("Failed to fetch user details.");
       } finally {
         dispatch(setLoaded());
