@@ -84,6 +84,114 @@ const workspaceSlice = createSlice({
         return folder;
       });
     },
+    addFormElement: (state, action) => {
+      const { formId, folderId, element } = action.payload;
+
+      if (folderId) {
+        // If a folderId is provided, find the folder and add element inside that form
+        state.folders = state.folders.map((folder) =>
+          folder._id === folderId
+            ? {
+                ...folder,
+                forms: folder.forms.map((form) =>
+                  form._id === formId
+                    ? { ...form, elements: [...form.elements, element] }
+                    : form
+                ),
+              }
+            : folder
+        );
+      } else {
+        // If no folderId, add the element in workspace-level forms
+        state.forms = state.forms.map((form) =>
+          form._id === formId
+            ? { ...form, elements: [...form.elements, element] }
+            : form
+        );
+      }
+    },
+
+    // Update a form element (either in a folder or workspace level)
+    updateFormElement: (state, action) => {
+      const { formId, folderId, elementId, key, value } = action.payload;
+
+      if (folderId) {
+        // Update in folder
+        state.folders = state.folders.map((folder) =>
+          folder._id === folderId
+            ? {
+                ...folder,
+                forms: folder.forms.map((form) =>
+                  form._id === formId
+                    ? {
+                        ...form,
+                        elements: form.elements.map((el) =>
+                          el.id === elementId ? { ...el, [key]: value } : el
+                        ),
+                      }
+                    : form
+                ),
+              }
+            : folder
+        );
+      } else {
+        // Update in workspace-level forms
+        state.forms = state.forms.map((form) =>
+          form._id === formId
+            ? {
+                ...form,
+                elements: form.elements.map((el) =>
+                  el.id === elementId ? { ...el, [key]: value } : el
+                ),
+              }
+            : form
+        );
+      }
+    },
+
+    // Delete a form element (either in a folder or workspace level)
+    deleteFormElement: (state, action) => {
+      const { formId, folderId, elementId } = action.payload;
+
+      if (folderId) {
+        // Delete from folder forms
+        state.folders = state.folders.map((folder) =>
+          folder._id === folderId
+            ? {
+                ...folder,
+                forms: folder.forms.map((form) =>
+                  form._id === formId
+                    ? {
+                        ...form,
+                        elements: form.elements.filter(
+                          (el) => el.id !== elementId
+                        ),
+                      }
+                    : form
+                ),
+              }
+            : folder
+        );
+      } else {
+        // Delete from workspace-level forms
+        state.forms = state.forms.map((form) =>
+          form._id === formId
+            ? {
+                ...form,
+                elements: form.elements.filter((el) => el.id !== elementId),
+              }
+            : form
+        );
+      }
+    },
+    selectFolder: (state, action) => {
+      state.selectedFolder = action.payload;
+    },
+
+    // Reset folder selection
+    resetFolderSelection: (state) => {
+      state.selectedFolder = null;
+    },
   },
 });
 
@@ -103,6 +211,11 @@ export const {
   deleteFolderSuccess,
   deleteWorkspaceFormSuccess, // Export new action
   deleteFolderFormSuccess, // Export new action
+  addFormElement,
+  updateFormElement,
+  deleteFormElement,
+  selectFolder,
+  resetFolderSelection,
 } = workspaceSlice.actions;
 
 export default workspaceSlice.reducer;

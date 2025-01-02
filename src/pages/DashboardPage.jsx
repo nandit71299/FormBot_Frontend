@@ -57,6 +57,7 @@ function DashboardPage() {
   const accessLevel = useSelector((store) => store.workspace.accessLevel);
   const stateFolder = useSelector((store) => store.workspace.folders);
   const [inviteModalOpen, setInviteModalOpen] = useState(false);
+  const selectedFolder = useSelector((store) => store.workspace.selectedFolder);
 
   const sendInvite = async (email, access) => {
     try {
@@ -135,6 +136,24 @@ function DashboardPage() {
 
     fetchUserDetails();
   }, [dispatch]);
+
+  useEffect(() => {
+    if (selectedFolder) {
+      const refetchFolderForms = async () => {
+        const response = await getFolderForms(
+          selectedWorkspace._id,
+          selectedFolder
+        );
+
+        if (response.success) {
+          dispatch(
+            setFolderForms({ folderId: selectedFolder, forms: response.forms })
+          );
+        }
+      };
+      refetchFolderForms();
+    }
+  }, []);
 
   useEffect(() => {
     if (selectedWorkspace) {

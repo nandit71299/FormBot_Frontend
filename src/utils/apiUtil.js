@@ -175,7 +175,6 @@ export const getWorkspaceFolders = async (workspaceId) => {
 
 export const getWorkspaceForms = async (workspaceId) => {
   try {
-    const token = localStorage.getItem("token");
     const response = await axios.get(`${API_URL}/forms/${workspaceId}`, {
       headers: {
         authorization: localStorage.getItem("token"),
@@ -311,7 +310,7 @@ export const createFormInsideFolder = async (
 
 export const inviteByEmail = async (email, access) => {
   try {
-    const response = await axios.put(
+    const response = await axios.post(
       `${API_URL}/workspace/shareworkspace/${email}/${access}`,
       null,
       {
@@ -404,6 +403,103 @@ export const updateProfile = async (data) => {
       return {
         success: false,
         message: error.response.data.message || "Failed to update profile.",
+      };
+    } else {
+      return {
+        success: false,
+        message: error.message || "An error occurred.",
+      };
+    }
+  }
+};
+
+export const shareWorkspaceViaLink = async (data) => {
+  try {
+    const response = await axios.post(
+      `${API_URL}/workspace/shareworkspace/link`,
+      data,
+      {
+        headers: {
+          authorization: localStorage.getItem("token"),
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      return {
+        success: false,
+        message:
+          error.response.data.message || "Failed to share workspace via link.",
+      };
+    } else {
+      return {
+        success: false,
+        message: error.message || "An error occurred.",
+      };
+    }
+  }
+};
+
+export const saveFormElements = async (data) => {
+  try {
+    const response = await axios.put(
+      `${API_URL}/forms/saveformelements`,
+      data,
+      {
+        headers: {
+          authorization: localStorage.getItem("token"),
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      return {
+        success: false,
+        message: error.response.data.message || "Failed to save form elements.",
+      };
+    } else {
+      return {
+        success: false,
+        message: error.message || "An error occurred.",
+      };
+    }
+  }
+};
+
+export const generateSessionId = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/forms/generate-session-id`);
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      return {
+        success: false,
+        message:
+          error.response.data.message || "Failed to generate session ID.",
+      };
+    } else {
+      return {
+        success: false,
+        message: error.message || "An error occurred.",
+      };
+    }
+  }
+};
+
+export const getFormElements = async (formId) => {
+  try {
+    const response = await axios.get(
+      `${API_URL}/forms/getformelements/${formId}`
+    );
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      return {
+        success: false,
+        message:
+          error.response.data.message || "Failed to fetch form elements.",
       };
     } else {
       return {

@@ -11,6 +11,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { setTheme } from "./redux/reducers/themeReducer";
 import FormBuilder from "./pages/FormBuilder";
 import SettingsPage from "./pages/SettingsPage";
+import Sharer from "./components/Sharer";
+import FormEntry from "./pages/FormEntry";
+import RedirectToForm from "./components/FormEntry/RedirectToForm";
 
 function App() {
   const theme = localStorage.getItem("theme");
@@ -39,7 +42,7 @@ function App() {
           }
         />
         <Route
-          path="/formbuilder/:workspaceId?/:formId?/:folderId?"
+          path="/formbuilder/:workspaceId/:formId/:folderId?"
           element={
             <PrivateRoute>
               <FormBuilder />
@@ -54,6 +57,18 @@ function App() {
             </PrivateRoute>
           }
         />
+        <Route
+          path="/share/:workspaceId/:accessLevel"
+          element={
+            <PrivateRoute>
+              <Sharer />
+            </PrivateRoute>
+          }
+        />
+
+        <Route path="/form/:formId" element={<RedirectToForm />} />
+        <Route path="/submit/:sessionId/:formId" element={<FormEntry />} />
+        <Route path="*" element={<LandingPage />} />
       </Routes>
     </BrowserRouter>
   );

@@ -34,11 +34,20 @@ function LoginForm() {
         }
         localStorage.setItem("theme", theme === "dark" ? true : false);
         dispatch(userLoginSuccess(response.user));
-        navigate("/dashboard");
+        const referer = localStorage.getItem("referer");
+
+        if (referer) {
+          localStorage.removeItem("referer"); // Remove the referer from storage
+          navigate(referer); // Redirect the user to the original page they tried to access
+        } else {
+          navigate("/dashboard"); // Default redirect after login (e.g., to dashboard)
+        }
       } else {
+        console.log(response.message);
         toast.error(response.message || "Login failed. Please try again.");
       }
     } catch (error) {
+      console.log(error.message);
       toast.error(error.message);
     }
   };

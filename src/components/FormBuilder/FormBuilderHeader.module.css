@@ -16,7 +16,7 @@
   background-color: white;
 }
 
-.formName {
+.formNameDark {
   background-color: rgba(55, 55, 62, 1);
   padding: 10px 30px;
   color: rgba(118, 118, 118, 0.82);
@@ -24,11 +24,27 @@
   border-radius: 3px;
 }
 
-.formName > h2 {
+.formNameLight {
+  background-color: transparent;
+  padding: 10px 30px;
+  color: rgba(118, 118, 118, 0.82);
+  margin: 0;
+  border-radius: 3px;
+}
+.formNameLight > h2 {
   margin: 0;
   font-size: 12px;
   font-weight: 600;
   font-family: var(--font-open-sans);
+  cursor: default;
+}
+
+.formNameDark > h2 {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: var(--font-open-sans);
+  cursor: default;
 }
 
 .textDark {
@@ -125,7 +141,7 @@
 .toggleContainer {
   display: flex;
   align-items: center;
-  gap: 50px;
+  gap: 10px;
 }
 
 .switch {
@@ -183,6 +199,19 @@
   cursor: pointer;
 }
 
+.saveBtn {
+  background-color: rgba(74, 222, 128, 0.8);
+  border: none;
+  border-radius: 6px;
+  padding: 10px 20px;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+}
+.saveBtnDisabled {
+  background-color: gray;
+}
+
 .shareBtn:hover {
   background-color: rgba(26, 95, 255, 0.8); /* Slight hover effect */
 }
@@ -197,4 +226,28 @@
 
 .logoutText {
   color: rgba(255, 165, 76, 1);
+}
+
+.closeBtn {
+  color: red;
+  background-color: transparent;
+  border: none;
+  font-size: 25px;
+  margin: 0;
+}
+.btnsContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.saveBtnDisabled {
+  background-color: gray;
+  cursor: not-allowed;
+}
+
+.shareBtnDisabled {
+  background-color: gray;
+  cursor: not-allowed;
 }

@@ -13,15 +13,22 @@ function InviteModal({ onClose, onSendInvite, onCopyLink }) {
 
   const handleSendInvite = () => {
     if (email.trim()) {
-      if (access.trim()) {
-        onSendInvite(email, access.toLowerCase());
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (emailRegex.test(email)) {
+        // Use `test()` to check if the email matches the regex
+        if (access.trim()) {
+          onSendInvite(email, access.toLowerCase());
+        }
+      } else {
+        toast.error("Invalid email address");
+        return;
       }
     }
   };
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(
-      `${import.meta.env.VITE_FRONTEND_URL}/share/${
+      `${window.location.origin}/share/${
         selectedWorkspace._id
       }/${access.toLowerCase()}`
     );

@@ -103,7 +103,12 @@ function SidebarOptions({ onAddElement }) {
       <h3 className={styles.sectionTitle}>Options</h3>
       <div className={styles.bubblesContainer}>
         {options.map((option) => (
-          <div key={option.label} className={styles.bubbleItem}>
+          <div
+            key={option.label}
+            className={`${styles.bubbleItem} ${
+              darkMode ? styles.bubbleItemDark : styles.bubbleItemLight
+            }`}
+          >
             <i className={option.icon} style={{ color: option.color }}></i>{" "}
             {/* Icon for option */}
             <button

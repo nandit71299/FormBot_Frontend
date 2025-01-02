@@ -1,30 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styles from "./FormBuilderHeader.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleTheme } from "../../redux/reducers/themeReducer";
 import { toggleAppTheme } from "../../utils/apiUtil";
-import { toast } from "react-toastify";
-import { selectWorkspace } from "../../redux/reducers/workspaceReducer"; // Ensure this action is imported
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function FormBuilderHeader({
-  workspaces,
-  selectedWorkspace,
-  setSelectedWorkspace,
-  isSharedWorkspaceFolders,
-  openInviteModal,
+  handleSaveForm, // Receive the save form function as prop
+  formName,
+  handleValidation,
+  isFormModified, // Receive the isFormModified state as prop
+  isFormSaved, // Receive the isFormSaved state as prop
 }) {
   const darkMode = useSelector((store) => store.theme.darkMode);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [dropdownOpen, setDropdownOpen] = useState(false);
 
-  useEffect(() => {
-    if (workspaces?.length > 0 && !selectedWorkspace) {
-      dispatch(selectWorkspace(workspaces[0])); // Automatically select the first workspace if none is selected
-    }
-  }, [workspaces, selectedWorkspace, dispatch]);
-
+  // Change theme when toggle is clicked
   const changeTheme = async () => {
     const response = await toggleAppTheme(darkMode ? "light" : "dark");
     if (response.success) {
@@ -35,13 +28,6 @@ function FormBuilderHeader({
     }
   };
 
-  const handleWorkspaceChange = (workspace) => {
-    dispatch(selectWorkspace(workspace)); // Dispatch to update the selected workspace in Redux
-    setDropdownOpen(false);
-  };
-
-  const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
-
   return (
     <div
       className={`${styles.mainContainer} ${
@@ -50,15 +36,27 @@ function FormBuilderHeader({
           : `${styles.bgLight} ${styles.textDark}`
       }`}
     >
-      <div className={`${styles.formName}`}>
-        <h2>Form Name</h2>
+      <div
+        className={`${darkMode ? styles.formNameDark : styles.formNameLight}`}
+      >
+        <h2>{formName}</h2>
       </div>
+
       <div>
         <button>Flow</button>
         <button>Response</button>
       </div>
-      <div className={styles.toggleContainer}>
-        <div>
+
+      {/* Theme toggle */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: "20px",
+        }}
+      >
+        <div className={styles.toggleContainer}>
           <label htmlFor="themeLight"> Light </label>
           <label className={styles.switch}>
             <input
@@ -71,32 +69,49 @@ function FormBuilderHeader({
           </label>
           <label htmlFor="themeDark"> Dark </label>
         </div>
-        <div>
+
+        {/* Action Buttons */}
+        <div className={styles.btnsContainer}>
+          {/* Share Button */}
           <button
-            disabled={isSharedWorkspaceFolders ? true : false}
             className={`${styles.shareBtn} ${
-              isSharedWorkspaceFolders && styles.shareBtnDisabled
+              !isFormSaved && styles.shareBtnDisabled
             }`}
             onClick={() => {
-              isSharedWorkspaceFolders ? "" : openInviteModal();
+              if (isFormSaved) {
+                toast.success("Form Link Copied Successfully");
+              } else {
+                return;
+              }
             }}
           >
             Share
           </button>
-          &nbsp;&nbsp;
+
+          {/* Save Button */}
           <button
-            disabled={isSharedWorkspaceFolders ? true : false}
-            className={`${styles.shareBtn} ${
-              isSharedWorkspaceFolders && styles.shareBtnDisabled
+            className={`${styles.saveBtn} ${
+              !isFormModified && styles.saveBtnDisabled
             }`}
-            onClick={() => {
-              isSharedWorkspaceFolders ? "" : openInviteModal();
-            }}
+            onClick={async () => {
+              if (isFormModified) {
+                const response = await handleValidation();
+                if (response === true) {
+                  handleSaveForm();
+                }
+              }
+            }} // Trigger the save function passed as prop
           >
             Save
           </button>
-          &nbsp;&nbsp;
-          <button>X</button>
+
+          {/* Close Button */}
+          <button
+            className={styles.closeBtn}
+            onClick={() => navigate("/dashboard")}
+          >
+            <i className="fa-solid fa-xmark"></i>
+          </button>
         </div>
       </div>
     </div>

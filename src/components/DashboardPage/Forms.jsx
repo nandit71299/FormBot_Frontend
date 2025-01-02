@@ -15,6 +15,9 @@ const Forms = ({
   const selectedFolder = useSelector((store) => store.workspace.selectedFolder);
   const folders = useSelector((store) => store.workspace.folders); // Access the folders from the Redux store
   const navigate = useNavigate();
+  const selectedWorkspace = useSelector(
+    (store) => store.workspace.selectedWorkspace
+  );
   // Determine which forms to display
   let formsToDisplay = forms; // Default to workspace-level forms
 
@@ -84,13 +87,13 @@ const Forms = ({
             className={`${
               darkMode ? styles.formContainerDark : styles.formContainerLight
             } ${styles.formContainer}`}
+            onClick={() => {
+              navigate(
+                `/formbuilder/${selectedWorkspace._id}/${form._id}/${form.folderId}`
+              );
+            }}
           >
-            <div
-              className={styles.formItem}
-              onClick={() => {
-                navigate(`/formbuilder`);
-              }}
-            >
+            <div className={styles.formItem}>
               <p>{form.formName}</p>
             </div>
 
