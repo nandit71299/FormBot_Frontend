@@ -2,7 +2,12 @@ import axios from "axios";
 
 const API_PORT = import.meta.env?.VITE_API_PORT || "";
 const api_url = import.meta.env.VITE_API_URL;
-const API_URL = `${api_url}:${API_PORT}/api`;
+let API_URL;
+if (API_PORT.length < 1) {
+  API_URL = `${api_url}/api`;
+} else {
+  API_URL = `${api_url}:${API_PORT}/api`;
+}
 
 export const verifyToken = async () => {
   try {
