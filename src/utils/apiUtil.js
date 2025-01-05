@@ -473,9 +473,11 @@ export const saveFormElements = async (data) => {
   }
 };
 
-export const generateSessionId = async () => {
+export const generateSessionId = async (formId) => {
   try {
-    const response = await axios.get(`${API_URL}/forms/generate-session-id`);
+    const response = await axios.get(
+      `${API_URL}/forms/generateSessionId/${formId}`
+    );
     return response.data;
   } catch (error) {
     if (error.response) {
@@ -505,6 +507,83 @@ export const getFormElements = async (formId) => {
         success: false,
         message:
           error.response.data.message || "Failed to fetch form elements.",
+      };
+    } else {
+      return {
+        success: false,
+        message: error.message || "An error occurred.",
+      };
+    }
+  }
+};
+
+export const addElementsToForm = async (data) => {
+  try {
+    const response = await axios.post(
+      `${API_URL}/forms/addFormResponse/${data.formId}`,
+      data,
+      {
+        headers: {
+          authorization: localStorage.getItem("token"),
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      return {
+        success: false,
+        message:
+          error.response.data.message || "Failed to add elements to form.",
+      };
+    } else {
+      return {
+        success: false,
+        message: error.message || "An error occurred.",
+      };
+    }
+  }
+};
+
+export const submitForm = async (data) => {
+  try {
+    const { sessionId, formId } = data;
+    const response = await axios.post(
+      `${API_URL}/forms/submitform/${formId}/${sessionId}`
+    );
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      return {
+        success: false,
+        message: error.response.data.message || "Failed to submit form.",
+      };
+    } else {
+      return {
+        success: false,
+        message: error.message || "An error occurred.",
+      };
+    }
+  }
+};
+
+export const getFormResponses = async (formId) => {
+  try {
+    const response = await axios.get(
+      `${API_URL}/forms/getAllformresponses/${formId}`,
+      {
+        headers: {
+          authorization: localStorage.getItem("token"),
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      return {
+        success: false,
+        message:
+          error.response.data.message || "Failed to fetch form responses.",
       };
     } else {
       return {

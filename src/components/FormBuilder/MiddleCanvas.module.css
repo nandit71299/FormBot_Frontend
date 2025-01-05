@@ -116,12 +116,14 @@
 }
 
 .inputWithIconDark {
+  color: white;
   background-color: rgba(31, 31, 35, 1);
 }
 
 .inputWithIconLight {
   background-color: rgba(255, 255, 255, 1);
   border: 1px solid lightgray;
+  color: black;
 }
 
 .inputContainer i {

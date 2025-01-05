@@ -121,9 +121,6 @@ function MiddleCanvas({
           </div>
         ))}
       </div>
-      <button className={styles.validateButton} onClick={onValidation}>
-        Validate Form
-      </button>
     </div>
   );
 }

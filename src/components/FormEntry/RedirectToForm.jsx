@@ -16,7 +16,7 @@ function RedirectToForm() {
     ) {
       const getUniqueId = async () => {
         try {
-          const response = await generateSessionId();
+          const response = await generateSessionId(formId);
           if (response.success) {
             setId(response.sessionId); // Update the state with the session ID
           } else {

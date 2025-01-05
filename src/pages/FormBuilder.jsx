@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import SidebarOptions from "../components/FormBuilder/SidebarOptions";
 import MiddleCanvas from "../components/FormBuilder/MiddleCanvas";
+import Response from "../components/FormBuilder/Response.jsx"; // Import the Response component
 import FormBuilderHeader from "../components/FormBuilder/FormBuilderHeader";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -23,6 +24,7 @@ import {
   getFolderForms,
   saveFormElements,
   getUserDetails,
+  getFormResponses,
 } from "../utils/apiUtil";
 
 function FormBuilder() {
@@ -36,6 +38,24 @@ function FormBuilder() {
   const [userDetails, setUserDetailsState] = useState(null);
   const [isFormSaved, setIsFormSaved] = useState(false);
   const [isFormModified, setIsFormModifed] = useState(false);
+  const [selectedView, setSelectedView] = useState("flow"); // Track the selected view (flow or response)
+  const [formResponses, setFormResponses] = useState([]);
+
+  useEffect(() => {
+    const formResponses = async () => {
+      try {
+        const response = await getFormResponses(formId);
+        if (response.success) {
+          setFormResponses(response.data);
+        } else {
+          toast.error(response.message || "Failed to fetch form responses.");
+        }
+      } catch (error) {
+        toast.error(error.message || "Failed to fetch form responses.");
+      }
+    };
+    formResponses();
+  }, []);
 
   // Fetch user details
   useEffect(() => {
@@ -130,9 +150,7 @@ function FormBuilder() {
     }
     const newElement = { id: Date.now(), type, placeholder: "", link: "" };
     if (folderId && folderId !== "null") {
-      {
-        dispatch(addFormElement({ formId, element: newElement, folderId }));
-      }
+      dispatch(addFormElement({ formId, element: newElement, folderId }));
     } else {
       dispatch(addFormElement({ formId, element: newElement }));
     }
@@ -211,6 +229,11 @@ function FormBuilder() {
     }
   };
 
+  // Button click handler to toggle between Flow and Response view
+  const handleViewToggle = (view) => {
+    setSelectedView(view);
+  };
+
   return (
     <div>
       <FormBuilderHeader
@@ -219,19 +242,30 @@ function FormBuilder() {
         handleValidation={handleValidation}
         isFormModified={isFormModified}
         isFormSaved={isFormSaved}
+        handleViewToggle={handleViewToggle} // Pass handler to header
+        selectedView={selectedView}
+        formId={formId}
       />
       <div
         className={`${styles.container} ${
           darkMode ? styles.containerDark : styles.containerLight
         }`}
       >
-        <SidebarOptions onAddElement={handleAddElement} />
-        <MiddleCanvas
-          formElements={formElements}
-          onUpdateElement={handleUpdateElement}
-          onDeleteElement={handleDeleteElement}
-          onValidation={handleValidation}
-        />
+        {selectedView === "flow" && (
+          <SidebarOptions onAddElement={handleAddElement} />
+        )}
+
+        {/* Conditional rendering of Flow or Response component */}
+        {selectedView === "flow" ? (
+          <MiddleCanvas
+            formElements={formElements}
+            onUpdateElement={handleUpdateElement}
+            onDeleteElement={handleDeleteElement}
+            onValidation={handleValidation}
+          />
+        ) : (
+          <Response formData={formResponses} />
+        )}
       </div>
     </div>
   );

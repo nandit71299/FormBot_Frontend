@@ -7,11 +7,14 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 function FormBuilderHeader({
-  handleSaveForm, // Receive the save form function as prop
+  handleSaveForm,
   formName,
   handleValidation,
-  isFormModified, // Receive the isFormModified state as prop
-  isFormSaved, // Receive the isFormSaved state as prop
+  isFormModified,
+  isFormSaved,
+  handleViewToggle, // Receive handleViewToggle function as a prop
+  selectedView,
+  formId,
 }) {
   const darkMode = useSelector((store) => store.theme.darkMode);
   const dispatch = useDispatch();
@@ -43,8 +46,21 @@ function FormBuilderHeader({
       </div>
 
       <div>
-        <button>Flow</button>
-        <button>Response</button>
+        <button
+          className={`${darkMode ? styles.btnDark : styles.btnLight}
+          ${selectedView === "flow" && styles.btnActive}`}
+          onClick={() => handleViewToggle("flow")}
+        >
+          Flow
+        </button>
+        <button
+          className={`${darkMode ? styles.btnDark : styles.btnLight} ${
+            selectedView === "response" && styles.btnActive
+          }`}
+          onClick={() => handleViewToggle("response")}
+        >
+          Response
+        </button>
       </div>
 
       {/* Theme toggle */}
@@ -79,6 +95,9 @@ function FormBuilderHeader({
             }`}
             onClick={() => {
               if (isFormSaved) {
+                navigator.clipboard.writeText(
+                  `${window.location.hostname}/form/${formId}`
+                );
                 toast.success("Form Link Copied Successfully");
               } else {
                 return;

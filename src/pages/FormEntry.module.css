@@ -1,0 +1,226 @@
+/* Main wrapper for the form */
+.formWrapper {
+  padding: 20px;
+  max-width: 800px; /* Increased the width for a better layout */
+  margin: 0 auto;
+}
+
+/* Title style for the form */
+.formTitle {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+/* Container for form elements */
+.formElementWrapper .formElement {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px; /* Space between avatar and the element */
+}
+
+/* Individual form element */
+.formElement {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+  padding: 10px 0;
+  position: relative;
+}
+
+/* Style for Text_Bubble elements */
+.textBubbleWrapper {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: row;
+}
+
+.textBubble {
+  padding: 10px;
+  background-color: #f1f1f1;
+  border-radius: 8px;
+  max-width: 80%;
+}
+
+/* Image loading indicator */
+.imageLoadingWrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+
+/* Button wrapper (for submit button) */
+.buttonWrapper {
+  text-align: center;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 200px;
+}
+
+.dynamicInputWrapper .formElement {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px; /* Space between the dynamic input and avatar */
+  width: 100%;
+}
+
+/* Dynamic input styling */
+.dynamicInput {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  color: black;
+  margin: 0;
+}
+
+/* Style for the loader */
+.loaderWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+}
+
+.chatWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 20px;
+}
+
+/* Avatar styles */
+.userImageWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px; /* Adjust margin to give space */
+}
+
+.userImage {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover; /* Ensures the image covers the circle without stretching */
+}
+
+/* Wrapping form elements in this flex container */
+.formElementWrapper {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+/* Style adjustments for text bubbles and other elements */
+.textBubbleWrapper,
+.dynamicInputWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+/* Style for text bubbles */
+.textBubble {
+  background-color: #f1f1f1;
+  padding: 10px 20px;
+  border-radius: 10px;
+  max-width: 80%;
+  word-wrap: break-word;
+}
+
+.button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 20%;
+}
+
+.button:hover {
+  background-color: #0056b3;
+}
+
+/* Image loading spinner */
+.imageLoadingWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.loader {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid #3498db;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.formElementWrapperRight {
+  justify-content: end;
+}
+
+/* New styles for the message-like bubble */
+.textBubbleWrapper {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 15px;
+  flex-direction: row;
+  margin-top: 10px;
+}
+
+.textBubble {
+  padding: 10px;
+  background-color: #f1f1f1;
+  border-radius: 8px;
+  max-width: 80%;
+  word-wrap: break-word;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for better contrast */
+}
+
+.dynamicInput {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  color: black;
+}
+
+.dynamicInputWrapper .formElement {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  width: 100%;
+}
+
+.textBubbleUser {
+  background-color: rgba(255, 142, 33, 1);
+  color: white;
+}
